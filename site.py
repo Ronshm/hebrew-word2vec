@@ -34,6 +34,7 @@ menu_text = '''
     '''
 
 
+
 @get('')
 @get('/')  # @route('/login')
 @get('/cyber')
