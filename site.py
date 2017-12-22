@@ -120,7 +120,7 @@ def analogy():
         text += "<br> <b size='4'>Algorithm: " + algo + "</b><br><br>"
         f.write("Algo: " + algo + "\n")
         words_idx = []
-        for in_word in range(len(input_words)):
+        for in_word in input_words:
             try:
                 cur_word_idx = [cur_algo_words.index(as_appears_in_algo(in_word))]
             except:
