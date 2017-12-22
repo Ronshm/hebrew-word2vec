@@ -34,7 +34,6 @@ menu_text = '''
     '''
 
 
-
 @get('')
 @get('/')  # @route('/login')
 @get('/cyber')
@@ -186,6 +185,9 @@ def main():
     add_algorithm(path_w2v_nn_pos_10, "w2v main (nn&pos) 10 feat", 1)
     add_algorithm(path_w2v_nn_pos_100, "w2v main (nn&pos) 100 feat", 1)
     add_algorithm(path_w2v_nn_pos_200, "w2v main (nn&pos) 200 feat", 1)
+    add_algorithm(path_w2v_twitter, "w2v twitter", 0)
+    add_algorithm(path_w2v_neg_20, "w2v nn&pos more negative(20)", 1)
+    add_algorithm(path_w2v_neg_20_min_20, "w2v nn&pos more negative(20) and higher min", 1)
     active_algos = ["w2v main (nn&pos) 100 feat", "Oded's algorithm", "fastText multi pos", "w2v multi pos"]
     active_algos = sorted(active_algos)
     # run(host='77.126.119.142', port=80, debug=True)

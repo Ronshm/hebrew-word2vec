@@ -25,6 +25,9 @@ path_odeds_algo = 'odeds-algo'
 path_w2v_nn_pos_10 = "w2v-nn-pos-10"
 path_w2v_nn_pos_100 = "w2v-nn-pos-100"
 path_w2v_nn_pos_200 = "w2v-nn-pos-200"
+path_w2v_twitter = 'twitter-w2v'
+path_w2v_neg_20 = 'w2v-nn-pos-neg-20'
+path_w2v_neg_20_min_20 = 'w2v-nn-pos-neg-20-min-20'
 
 
 def compat_splitting(line):
@@ -200,44 +203,3 @@ if __name__ == "__main__":
 #         #     print"here2"
 #         #     f_nn.write(str(words[indexes[j]]) + str('\t') + str(sim[i]) + str('\t'))
 #     f_nn.write('\n')
-
-
-# print words[36]
-# for index in indexes:
-#     print words[index]
-# print top_similar(vectors[40], vectors)
-
-
-
-# def top_similar(vec, vec_set):
-#     indexes = [0 for i in range(10)]
-#     sim = [similarity(vec, vec_set[i]) for i in indexes]
-#     # sim = []
-#     # indexes = []
-#     # for i in range(10):
-#     #     indexes.append(i)
-#     #     sim.append(similarity(vec, vec_set[i]))
-#     for i in range(len(vec_set)):
-#         try:
-#             cur_sim = similarity(vec, vec_set[i])
-#         except:
-#             # print "error compute " + str(i)
-#             continue
-#         j = 9
-#         while cur_sim > sim[j] and j >= 0:
-#             j -= 1
-#         if j < 9:
-#             if j == 8:
-#                 indexes[9] = i
-#                 sim[9] = cur_sim
-#             else:
-#                 indexes[j + 2:] = indexes[j + 1:-1]
-#                 indexes[j + 1] = i
-#                 sim[j + 2:] = sim[j + 1:-1]
-#                 sim[j + 1] = cur_sim
-#     return indexes, sim
-
-# def similarity(v1, v2):
-#     n1 = np.linalg.norm(v1)
-#     n2 = np.linalg.norm(v2)
-#     return np.dot(v1, v2) / n1 / n2
