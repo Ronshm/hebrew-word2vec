@@ -50,8 +50,13 @@ def read_vectors(model_path):
             #     break
             tab = compat_splitting(line)
             if len(tab) == 0:
+                print("passed error1")
                 continue
-            vec = np.array(tab[1:], dtype=float)
+            try:
+                vec = np.array(tab[1:], dtype=float)
+            except:
+                print("passed error2")
+                continue
             # print vec
             word = tab[0]
             if (len(vec) != 100) and (len(vec) != 200) and (len(vec) != 10):
