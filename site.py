@@ -38,6 +38,8 @@ menu_text = '''
 @get('')
 @get('/')  # @route('/login')
 @get('/cyber')
+@get('/w2v')
+@get('/heb-w2v')
 def get_menu():
     return menu_text
 
