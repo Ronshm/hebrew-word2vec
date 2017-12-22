@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 from bottle import *
 from utils import *
+import itertools
 
 #
 # reload(sys)
@@ -67,17 +68,14 @@ def update_wanted_algos():
 @post('/similar')
 @get('/similar')
 def search():
-    # print active_algos
     f = open(search_result_file, 'a')
     wanted = request.forms.get('wanted')
     if not wanted:
         return "<p size='4'>Please enter a word</p>"
     text = menu_text
     text += "<p align='center'><b  size='5'>Current searching for words similar to-&nbsp&nbsp&nbsp" + wanted + "</b><br>"
-    f.write("\n\nCurrent searching for words similar to:" + wanted + "\n")
     for algo in active_algos:
         cur_algo_words = words_dict[algo]
-        cur_algo_vectors = vectors_dict[algo]
         f.write("Algo: " + algo + "\n")
         text += "<b align = 'center'><br> Algorithm: " + algo + "</b><br>"
         try:
@@ -97,13 +95,9 @@ def search():
         if not isinstance(wanted_ind, list):
             wanted_ind = [wanted_ind]
         for word_ind in wanted_ind:
+            f.write("\n\nCurrent searching for words similar to:" + cur_algo_words[word_ind] + "\n")
             text += "<br>Showing results for " + as_appear_in_site(cur_algo_words[word_ind]) + '<br><br>'
-            inds, sims = top_similar(cur_algo_vectors[word_ind], cur_algo_vectors)
-            for i in range(len(inds)):
-                text += "similarity::" + str(sims[i]) + "&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp" + \
-                        as_appear_in_site(cur_algo_words[inds[i]]) + "<br>"
-                if i > 0 and i < 5:
-                    f.write(cur_algo_words[inds[i]] + "\n")
+            text += get_similar_to_site_and_file(wanted, algo, f)
     return text + "</p>"
 
 
@@ -111,45 +105,64 @@ def search():
 @get('/analogy')
 def analogy():
     f = open(analogy_result_file, 'a')
-    word1 = request.forms.get('word1')
-    word2 = request.forms.get('word2')
-    word3 = request.forms.get('word3')
-    if (not word1) or (not word2) or (not word3):
-        return "<p size='4'>Please enter all the words.</p>"
+    input_words = [request.forms.get('word1'), request.forms.get('word2'), request.forms.get('word3')]
+    for in_word in input_words:
+        if not in_word:
+            return "<p size='4'>Please enter all the words.</p>"
     text = menu_text
-    text += "<p align='center'><b  size='6'>Current looking for:<br>" + word3 + " : word" + "<br>=<br>" + word2 + " : " + word1 \
-            + "</b><br>"
-    f.write("\n\nCurrent looking for:" + word3 + " : word = " + word2 + " : " + word1 + "\n")
     for algo in active_algos:
         cur_algo_words = words_dict[algo]
         cur_algo_vectors = vectors_dict[algo]
-        flag = 0
+        flag = False
         text += "<br> <b size='4'>Algorithm: " + algo + "</b><br><br>"
         f.write("Algo: " + algo + "\n")
-        try:
-            word1_idx = cur_algo_words.index(as_appears_in_algo(word1))
-        except:
-            flag = 1
-            text += word1 + " is unknown, sorry."
-        try:
-            word2_idx = cur_algo_words.index(as_appears_in_algo(word2))
-        except:
-            flag = 1
-            text += word2 + " is unknown, sorry."
-        try:
-            word3_idx = cur_algo_words.index(as_appears_in_algo(word3))
-        except:
-            flag = 1
-            text += word3 + " is unknown, sorry."
+        words_idx = []
+        for in_word in range(len(input_words)):
+            try:
+                cur_word_idx = [cur_algo_words.index(as_appears_in_algo(in_word))]
+            except:
+                cur_word_idx = search_for_word_as_part_of_pos(in_word, algo)
+                if len(cur_word_idx) == 0:
+                    text += in_word + " is unknown, sorry."
+                    flag = True
+            words_idx.append(cur_word_idx)
+
         if not flag:
-            wanted = cur_algo_vectors[word3_idx] - cur_algo_vectors[word1_idx] + cur_algo_vectors[word2_idx]
-            inds, sims = top_similar(wanted, cur_algo_vectors)
-            for i in range(len(inds)):
-                text += "similarity::" + str(sims[i]) + "&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp" + \
-                        as_appear_in_site(cur_algo_words[inds[i]]) + "<br>"
-                if i < 5:
-                    f.write(cur_algo_words[inds[i]] + "\n")
+            for input_pos_idx_option in list(itertools.product(*words_idx)):
+                text += "<p align='center'><b  size='6'>Current looking for:<br>" + cur_algo_words[
+                    input_pos_idx_option[2]] + " : word" + "<br>=<br>" + cur_algo_words[
+                            input_pos_idx_option[1]] + " : " + cur_algo_words[input_pos_idx_option[0]] + "</b><br>"
+                f.write("\n\nCurrent looking for:" + cur_algo_words[input_pos_idx_option[2]] + " : word = " +
+                        cur_algo_words[input_pos_idx_option[1]] + " : " + cur_algo_words[
+                            input_pos_idx_option[0]] + "\n")
+                wanted = cur_algo_vectors[input_pos_idx_option[2]] - cur_algo_vectors[input_pos_idx_option[0]] + \
+                         cur_algo_vectors[input_pos_idx_option[1]]
+                text += get_similar_to_site_and_file(wanted, algo, f)
     return text + "</p>"
+
+
+def get_similar_to_site_and_file(wanted, algo, f):
+    text = ""
+    inds, sims = top_similar(wanted, vectors_dict[algo])
+    for i in range(len(inds)):
+        text += "similarity:" + str(sims[i]) + "&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp" + \
+                as_appear_in_site(words_dict[algo][inds[i]]) + "<br>"
+        if i < 5:
+            f.write(words_dict[algo][inds[i]] + "\n")
+    return text
+
+
+def search_for_word_as_part_of_pos(wanted, algo):
+    cur_algo_words = words_dict[algo]
+    wanted_idx = []
+    if multi_pos_dict[algo]:
+        for i, word in enumerate(cur_algo_words):
+            parts = word.split('_')
+            if len(parts) > 1 and parts[1] == wanted:
+                if len(parts) > 1 and parts[1] == wanted:
+                    wanted_idx.append(i)
+                    print cur_algo_words[i]
+    return wanted_idx
 
 
 def add_algorithm(path, name, multi_pos_flag=0):
