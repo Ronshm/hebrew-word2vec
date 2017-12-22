@@ -31,7 +31,12 @@ path_w2v_neg_20_min_20 = 'w2v-nn-pos-neg-20-min-20'
 
 
 def compat_splitting(line):
-    return line.decode('utf8').split()
+    try:
+        ret_value = line.decode('utf8').split()
+    except:
+        print("error on this line:", line)
+        ret_value = []
+    return ret_value
 
 
 def read_vectors(model_path):
@@ -44,10 +49,12 @@ def read_vectors(model_path):
             # if len(words) > 10:
             #     break
             tab = compat_splitting(line)
+            if len(tab) == 0:
+                continue
             vec = np.array(tab[1:], dtype=float)
             # print vec
             word = tab[0]
-            if (len(vec) != 100) and (len(vec) != 200) and (len(vec) != 100):
+            if (len(vec) != 100) and (len(vec) != 200) and (len(vec) != 10):
                 pass
             else:
                 words.append(word + str('\n'))
