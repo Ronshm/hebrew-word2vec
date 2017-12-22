@@ -78,6 +78,7 @@ def search():
     text += "<p align='center'><b  size='5'>Current searching for words similar to-&nbsp&nbsp&nbsp" + wanted + "</b><br>"
     for algo in active_algos:
         cur_algo_words = words_dict[algo]
+        cur_algo_vectors = vectors_dict[algo]
         f.write("Algo: " + algo + "\n")
         text += "<b align = 'center'><br> Algorithm: " + algo + "</b><br>"
         try:
@@ -99,7 +100,7 @@ def search():
         for word_ind in wanted_ind:
             f.write("\n\nCurrent searching for words similar to:" + cur_algo_words[word_ind] + "\n")
             text += "<br>Showing results for " + as_appear_in_site(cur_algo_words[word_ind]) + '<br><br>'
-            text += get_similar_to_site_and_file(wanted, algo, f)
+            text += get_similar_to_site_and_file(cur_algo_vectors[word_ind], algo, f)
     return text + "</p>"
 
 
