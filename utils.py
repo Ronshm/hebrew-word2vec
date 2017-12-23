@@ -99,7 +99,6 @@ def organize_odeds_data(path):
 
 
 def top_similar(vec, vec_set, results_to_show=10):
-    print("num results asked: ", results_to_show)
     try:
         mul = np.dot(vec_set, vec)
     except:

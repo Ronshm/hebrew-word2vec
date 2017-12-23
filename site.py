@@ -49,14 +49,9 @@ def update_wanted_algos():
 @post('/update_num_results')
 @get('/update_num_results')
 def update_num_results():
-    print("entered1")
     global num_results
-    print("entered2")
     wanted_num_results = request.forms.get('num_results_to_show')
-    print("entered3")
-    num_results = wanted_num_results
-    print num_results
-    print type(num_results)
+    num_results = int(wanted_num_results)
     return menu_text
 
 
@@ -85,7 +80,6 @@ def search():
         for word_ind in wanted_ind:
             f.write("\n\nCurrent searching for words similar to:" + cur_algo_words[word_ind] + "\n")
             text += "<br>Showing results for " + as_appear_in_site(cur_algo_words[word_ind]) + '<br><br>'
-            print("here0")
             text += get_similar_to_site_and_file(cur_algo_vectors[word_ind], algo, f)
     return text + "</p>"
 
@@ -131,14 +125,9 @@ def analogy():
 
 
 def get_similar_to_site_and_file(wanted, algo, f):
-    print("here1")
     global num_results
-    print("here2")
     text = ""
-    print("here3")
     inds, sims = top_similar(wanted, vectors_dict[algo], results_to_show=num_results)
-    print("pass call")
-    print("found: ", len(inds))
     for i in range(len(inds)):
         text += "similarity:" + str(sims[i]) + "&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp" + \
                 as_appear_in_site(words_dict[algo][inds[i]]) + "<br>"
