@@ -35,9 +35,9 @@ menu_text = '''
         </form>
 
          <form action="update_num_results" method="post">
-          Number of results to show (between 3 and 15), default is 10:
-          <input type="number" name="num_results" min="3" max="15">
-          <input value="Search" type="submit" />
+          Number of results to show, default is 10:
+          <input type="text" name="num_results">
+          <input value="Set" type="submit" />
         </form>
 
         <b size = '7'> <br>Please notice that the algorithm is designed to work for Hebrew words only.<br><br></b>
