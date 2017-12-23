@@ -54,7 +54,7 @@ def update_num_results():
     print("entered2")
     wanted_num_results = request.forms.get('num_results_to_show')
     print("entered3")
-    num_results = int(wanted_num_results)
+    num_results = wanted_num_results
     print num_results
     print type(num_results)
     return menu_text

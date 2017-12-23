@@ -34,10 +34,10 @@ menu_text = '''
         <input type="submit" value="Select which algorithms to show">
         </form>
 
-         <form action="update_num_results" method="post">
-          Number of results to show, default is 10:
-          <input type="text" name="num_results_to_show" />
-          <input value="Set" type="submit" />
+        <form action="update_num_results" method="post">
+          Number of results to show (between 3 and 15), default is 10:
+        <input type="number" name="num_results_to_show" min="3" max="15"/>
+        <input value="Set" type="submit" />
         </form>
 
         <b size = '7'> <br>Please notice that the algorithm is designed to work for Hebrew words only.<br><br></b>
