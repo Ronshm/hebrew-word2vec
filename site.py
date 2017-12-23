@@ -34,8 +34,8 @@ def choose_algo():
     return html
 
 
-@post('/update_wanted_algos')
-@get('/update_wanted_algos')
+@post('/algo_selected')
+@get('/algo_selected')
 def update_wanted_algos():
     global active_algos
     active_algos = []
