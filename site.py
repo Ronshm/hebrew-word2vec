@@ -14,7 +14,6 @@ global active_algos
 global num_results
 
 
-
 @get('')
 @get('/')  # @route('/login')
 @get('/cyber')
@@ -81,6 +80,7 @@ def search():
         for word_ind in wanted_ind:
             f.write("\n\nCurrent searching for words similar to:" + cur_algo_words[word_ind] + "\n")
             text += "<br>Showing results for " + as_appear_in_site(cur_algo_words[word_ind]) + '<br><br>'
+            print("here0")
             text += get_similar_to_site_and_file(cur_algo_vectors[word_ind], algo, f)
     return text + "</p>"
 
@@ -126,8 +126,11 @@ def analogy():
 
 
 def get_similar_to_site_and_file(wanted, algo, f):
+    print("here1")
     global num_results
+    print("here2")
     text = ""
+    print("here3")
     inds, sims = top_similar(wanted, vectors_dict[algo], results_to_show=num_results)
     print("pass call")
     print("found: ", len(inds))
