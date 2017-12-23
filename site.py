@@ -52,6 +52,8 @@ def update_num_results():
     global num_results
     wanted_num_results = request.forms.get('num_results')
     num_results = wanted_num_results
+    print num_results
+    print type(num_results)
     return menu_text
 
 

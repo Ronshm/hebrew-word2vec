@@ -4,6 +4,7 @@ analogy_result_file = 'analogy_results.txt'
 MAX_RESULTS_PRINT_TO_FILE = 5
 DEFAULT_NUM_RESULTS = 10
 
+# todo enum class
 path_w2v = 'w2v'  # win 5
 path_w2v_seg = 'w2v-sig'  # win 10
 path_FT = 'fastText'  # win 5
