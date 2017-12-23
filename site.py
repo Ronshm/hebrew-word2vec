@@ -81,22 +81,14 @@ def search():
         cur_algo_vectors = vectors_dict[algo]
         f.write("Algo: " + algo + "\n")
         text += "<b align = 'center'><br> Algorithm: " + algo + "</b><br>"
+
+        wanted_ind = search_for_word_as_part_of_pos(wanted, algo)
         try:
-            wanted_ind = cur_algo_words.index(as_appears_in_algo(wanted))
+            wanted_ind = [cur_algo_words.index(as_appears_in_algo(wanted))]
         except:
-            wanted_ind = []
-            if multi_pos_dict[algo]:
-                for i, word in enumerate(cur_algo_words):
-                    parts = word.split('_')
-                    if len(parts) > 1 and parts[1] == wanted:
-                        if len(parts) > 1 and parts[1] == wanted:
-                            wanted_ind.append(i)
-                            print cur_algo_words[i]
             if len(wanted_ind) == 0:
                 text += wanted + " is unknown, sorry."
                 continue
-        if not isinstance(wanted_ind, list):
-            wanted_ind = [wanted_ind]
         for word_ind in wanted_ind:
             f.write("\n\nCurrent searching for words similar to:" + cur_algo_words[word_ind] + "\n")
             text += "<br>Showing results for " + as_appear_in_site(cur_algo_words[word_ind]) + '<br><br>'
@@ -117,14 +109,14 @@ def analogy():
         cur_algo_words = words_dict[algo]
         cur_algo_vectors = vectors_dict[algo]
         flag = False
-        text += "<br> <b size='4'>Algorithm: " + algo + "</b><br><br>"
+        text += "<br> <b align='center' size='4'>Algorithm: " + algo + "</b><br><br>"
         f.write("Algo: " + algo + "\n")
         words_idx = []
         for in_word in input_words:
+            cur_word_idx = search_for_word_as_part_of_pos(in_word, algo)
             try:
                 cur_word_idx = [cur_algo_words.index(as_appears_in_algo(in_word))]
             except:
-                cur_word_idx = search_for_word_as_part_of_pos(in_word, algo)
                 if len(cur_word_idx) == 0:
                     text += in_word + " is unknown, sorry."
                     flag = True
