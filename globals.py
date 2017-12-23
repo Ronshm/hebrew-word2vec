@@ -36,7 +36,7 @@ menu_text = '''
 
          <form action="update_num_results" method="post">
           Number of results to show, default is 10:
-          <input type="text" name="num_results_to_show"/>
+          <input type="text" name="num_results_to_show" />
           <input value="Set" type="submit" />
         </form>
 
