@@ -50,8 +50,10 @@ def update_wanted_algos():
 @get('/algo_selected')
 def update_num_results():
     global num_results
-    wanted_num_results = request.forms.get('num_results')
+    wanted_num_results = request.forms.get('num_results_to_show')
     num_results = int(wanted_num_results)
+    print num_results
+    print type(num_results)
     return menu_text
 
 
