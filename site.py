@@ -10,29 +10,42 @@ import itertools
 
 search_result_file = 'search_results.txt'
 analogy_result_file = 'analogy_results.txt'
+
+MAX_RESULTS_PRINT_TO_FILE = 5
+DEFAULT_NUM_RESULTS = 10
 global active_algos
+global num_results
 
 menu_text = '''
         <i size="7"><strong> Hebrew Word2Vec<br><br></strong></i>
         <form action="choose_algo" method="post">
         <input type="submit" value="Select which algorithms to show">
         </form>
-	<b size = '7'> <br>Please notice that the algorithm is designed to work for Hebrew words only.<br><br></b>
-        <b size="6"> Analogies:<br></b>
-	<p size = '5'>This algorithm helps to search for analogies.<br><br> word1 : word2 = word3 : ?<br><br> For example:<br>France : Paris = Japan : Tokyo<br></p>
+
+         <form action="update_num_results" method="post">
+          Number of results to show (between 3 and 15), default is 10:
+          <input type="number" name="num_results" min="3" max="15">
+          <input value="Search" type="submit" />
+        </form>
+
+        <b size = '7'> <br>Please notice that the algorithm is designed to work for Hebrew words only.<br><br></b>
+            <b size="6"> Analogies:<br></b>
+
+        <p size = '5'>This algorithm helps to search for analogies.<br><br> word1 : word2 = word3 : ?<br><br> For example:<br>France : Paris = Japan : Tokyo<br></p>
         <form action="analogy" method="post">
             Enter word1: <input name="word1" type="text" />
             Enter word2: <input name="word2" type="text" />
             Enter word3: <input name="word3" type="text" />
             <input value="Search" type="submit" />
         </form>
+
         <b size="6"><br><br>Similar words:<br></b>
-	<p size = 5>This algorithm helps to search for similar words.<br></p>
-        <form action="similar" method="post">
-            Enter word: <input name="wanted" type="text" />
-            <input value="Search" type="submit" />
-        </form>
-    '''
+        <p size = 5>This algorithm helps to search for similar words.<br></p>
+            <form action="similar" method="post">
+                Enter word: <input name="wanted" type="text" />
+                <input value="Search" type="submit" />
+            </form>
+        '''
 
 
 @get('')
@@ -55,8 +68,8 @@ def choose_algo():
     return html
 
 
-@post('/algo_selected')
-@get('/algo_selected')
+@post('/update_num_results')
+@get('/update_num_results')
 def update_wanted_algos():
     global active_algos
     active_algos = []
@@ -64,6 +77,15 @@ def update_wanted_algos():
         if request.forms.get(algo):
             active_algos.append(algo)
     active_algos = sorted(active_algos)
+    return menu_text
+
+
+@post('/algo_selected')
+@get('/algo_selected')
+def update_num_results():
+    global num_results
+    wanted_num_results = request.forms.get('num_results')
+    num_results = wanted_num_results
     return menu_text
 
 
@@ -137,12 +159,13 @@ def analogy():
 
 
 def get_similar_to_site_and_file(wanted, algo, f):
+    global num_results
     text = ""
-    inds, sims = top_similar(wanted, vectors_dict[algo])
+    inds, sims = top_similar(wanted, vectors_dict[algo], num_results=num_results)
     for i in range(len(inds)):
         text += "similarity:" + str(sims[i]) + "&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp" + \
                 as_appear_in_site(words_dict[algo][inds[i]]) + "<br>"
-        if i < 5:
+        if i < MAX_RESULTS_PRINT_TO_FILE:
             f.write(words_dict[algo][inds[i]] + "\n")
     return text
 
@@ -175,6 +198,8 @@ def add_algorithm(path, name, multi_pos_flag=0):
 
 def main():
     global active_algos
+    global num_results
+    num_results = DEFAULT_NUM_RESULTS
     add_algorithm(path_FT, "fastText")
     add_algorithm(path_w2v, "w2v")
     # add_algorithm(path_FT_seg, "fastText seg")

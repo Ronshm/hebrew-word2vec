@@ -121,7 +121,7 @@ def organize_odeds_data(path):
     print("words saved")
 
 
-def top_similar(vec, vec_set):
+def top_similar(vec, vec_set, num_results=10):
     try:
         mul = np.dot(vec_set, vec)
     except:
@@ -130,13 +130,12 @@ def top_similar(vec, vec_set):
         except:
             for i in range(len(vec_set)):
                 if vec_set[i].shape[0] != 100 or vec_set[i].shape[0] != 200:
-                    print i
-                    print vec_set[i].shape
+                    print("error at top similar at vec number " + str(i) + "with shape" + str(vec_set[i].shape))
     vec_norm = LA.norm(vec)
     vecs_norms = LA.norm(vec_set, axis=1)
     sims = np.divide(mul, vecs_norms)
     sims /= vec_norm
-    ind = np.argpartition(sims, -10)[-10:]
+    ind = np.argpartition(sims, -num_results)[-num_results:]
     ind = ind[np.argsort(sims[ind])]
     ind = ind[::-1]
     return ind, sims[ind]
