@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 from bottle import *
 from utils import *
+from globals import *
 import itertools
 
 #
@@ -161,7 +162,9 @@ def analogy():
 def get_similar_to_site_and_file(wanted, algo, f):
     global num_results
     text = ""
-    inds, sims = top_similar(wanted, vectors_dict[algo], num_results=num_results)
+    inds, sims = top_similar(wanted, vectors_dict[algo], results_to_show=num_results)
+    print("pass call")
+    print("found: ", len(inds))
     for i in range(len(inds)):
         text += "similarity:" + str(sims[i]) + "&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp" + \
                 as_appear_in_site(words_dict[algo][inds[i]]) + "<br>"
