@@ -30,15 +30,6 @@ path_w2v_neg_20_min_20 = 'w2v-nn-pos-neg-20-min-20'
 
 menu_text = '''
         <i size="7"><strong> Hebrew Word2Vec<br><br></strong></i>
-        <form action="choose_algo" method="post">
-        <input type="submit" value="Select which algorithms to show">
-        </form>
-
-        <form action="update_num_results" method="post">
-          Number of results to show (between 3 and 15), default is 10:
-        <input type="number" name="num_results_to_show" min="3" max="15"/>
-        <input value="Set" type="submit" />
-        </form>
 
         <b size = '7'> <br>Please notice that the algorithm is designed to work for Hebrew words only.<br><br></b>
             <b size="6"> Analogies:<br></b>
@@ -57,4 +48,15 @@ menu_text = '''
                 Enter word: <input name="wanted" type="text" />
                 <input value="Search" type="submit" />
             </form>
+
+
+        <form action="choose_algo" method="post">
+        <input type="submit" value="Select which algorithms to show">
+        </form>
+
+        <form action="update_num_results" method="post">
+          Number of results to show (between 3 and 15), default is 10:
+        <input type="number" name="num_results_to_show" min="3" max="15"/>
+        <input value="Set" type="submit" />
+        </form>
         '''
