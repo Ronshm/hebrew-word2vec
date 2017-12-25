@@ -81,7 +81,7 @@ def search():
         for word_ind in wanted_ind:
             f.write("\n\nCurrent searching for words similar to:" + cur_algo_words[word_ind] + "\n")
             text += "<br>Showing results for " + as_appear_in_site(cur_algo_words[word_ind]) + '<br><br>'
-            text += get_similar_to_site_and_file(cur_algo_vectors[word_ind], algo, f)
+            text += get_similar_to_site_and_file(word_ind, algo, f)
     return text + "</p>"
 
 
@@ -125,10 +125,11 @@ def analogy():
     return text + "</p>"
 
 
-def get_similar_to_site_and_file(wanted, algo, f):
+def get_similar_to_site_and_file(wanted_idx, algo, f):
     global num_results
     text = ""
-    inds, sims = top_similar(wanted, vectors_dict[algo], results_to_show=num_results)
+    # inds, sims = top_similar(wanted, vectors_dict[algo], results_to_show=num_results)
+    inds, sims = top_similar_smart(wanted_idx, vectors_dict[algo], results_to_show=num_results)
     for i in range(len(inds)):
         text += "similarity:" + str(sims[i]) + "&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp" + \
                 as_appear_in_site(words_dict[algo][inds[i]]) + "<br>"

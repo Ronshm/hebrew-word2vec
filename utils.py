@@ -122,7 +122,19 @@ def organize_odeds_data(path):
     print("words saved")
 
 
-def top_similar(vec, vec_set, results_to_show=10):
+def top_similar_smart(idx, vec_set, words_counts, results_to_show=10):
+    inds, sims = top_similar(vec_set[idx], vec_set, results_to_show + 5)
+    cur_words_counts = words_counts[inds]
+    highest = np.max(cur_words_counts)
+    smart_score = [sims[i] + 0.1 * cur_words_counts[i] / highest for i in range(len(inds))]
+    ind = np.argpartition(smart_score, -results_to_show)[-results_to_show:]
+    ind = ind[np.argsort(sims[ind])]
+    ind = ind[::-1]
+    return ind, smart_score[ind]
+
+
+def top_similar(idx, vec_set, results_to_show=10):
+    vec = vec_set[idx]
     try:
         mul = np.dot(vec_set, vec)
     except:
