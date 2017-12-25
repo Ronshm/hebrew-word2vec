@@ -55,8 +55,11 @@ def create_words_counter(path):
     with open(os.path.join(path, "words_list.txt"), 'r') as f:
         words = f.readlines()
     words_in_order = [word[:-1] for word in words]
-
-    with open('data/wiki-processed-data.txt', 'r') as fin:
+    if 'twitter' in path:
+        path = 'data/twitter-data.txt'
+    else:
+        path = 'data/wiki-processed-data.txt'
+    with open(path, 'r') as fin:
         words = []
         for i, line in enumerate(fin):
             if i % 1000000 == 0:
@@ -196,7 +199,7 @@ def get_context_vec(path, context_words, words_list):
 
 if __name__ == "__main__":
     # organize_data(join("result", path_w2v_nn_pos_200))
-    create_words_counter(join('result', Path.path_w2v_nn_pos_100.value))
+    create_words_counter(join('result', Path.path_w2v_twitter.value))
     # pass
 # _, vectors = read_vectors(join('result', path_nn_pos_10, "context.txt"))
 # np.save(join('result', path_nn_pos_10, "context_vectors.npy"), vectors)
