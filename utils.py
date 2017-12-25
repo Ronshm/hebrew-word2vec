@@ -126,14 +126,14 @@ def organize_odeds_data(path):
 
 
 def top_similar_smart(wanted, vec_set, words_counts, results_to_show=10):
-    inds, sims = top_similar(wanted, vec_set, results_to_show + 5)
-    cur_words_counts = words_counts[inds]
+    idx, sims = top_similar(wanted, vec_set, results_to_show + 5)
+    cur_words_counts = words_counts[idx]
     highest = np.max(cur_words_counts)
-    smart_score = [sims[i] + 0.1 * cur_words_counts[i] / highest for i in range(len(inds))]
+    smart_score = [(sims[i] + 0.1 * cur_words_counts[i] / highest) for i in range(len(idx))]
     ind = np.argpartition(smart_score, -results_to_show)[-results_to_show:]
-    ind = ind[np.argsort(smart_score[ind])]
+    ind = ind[np.argsort([smart_score[i] for i in ind])]
     ind = ind[::-1]
-    return inds, [smart_score[i] for i in ind]
+    return [idx[i] for i in ind], [smart_score[i] for i in ind]
 
 
 def top_similar(vec, vec_set, results_to_show=10):
