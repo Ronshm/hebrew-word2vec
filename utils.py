@@ -56,10 +56,10 @@ def create_words_counter(path):
         words = f.readlines()
     words_in_order = [word[:-1] for word in words]
     if 'twitter' in path:
-        path = 'data/twitter-data.txt'
+        data_path = 'data/twitter-data.txt'
     else:
-        path = 'data/wiki-processed-data.txt'
-    with open(path, 'r') as fin:
+        data_path = 'data/wiki-processed-data.txt'
+    with open(data_path, 'r') as fin:
         words = []
         for i, line in enumerate(fin):
             if i % 1000000 == 0:
@@ -125,8 +125,8 @@ def organize_odeds_data(path):
     print("words saved")
 
 
-def top_similar_smart(idx, vec_set, words_counts, results_to_show=10):
-    inds, sims = top_similar(vec_set[idx], vec_set, results_to_show + 5)
+def top_similar_smart(wanted, vec_set, words_counts, results_to_show=10):
+    inds, sims = top_similar(wanted, vec_set, results_to_show + 5)
     cur_words_counts = words_counts[inds]
     highest = np.max(cur_words_counts)
     smart_score = [sims[i] + 0.1 * cur_words_counts[i] / highest for i in range(len(inds))]
@@ -136,8 +136,7 @@ def top_similar_smart(idx, vec_set, words_counts, results_to_show=10):
     return ind, smart_score[ind]
 
 
-def top_similar(idx, vec_set, results_to_show=10):
-    vec = vec_set[idx]
+def top_similar(vec, vec_set, results_to_show=10):
     try:
         mul = np.dot(vec_set, vec)
     except:

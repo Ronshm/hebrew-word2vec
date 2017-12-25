@@ -67,13 +67,13 @@ def search():
     text += "<p align='center'><b  size='5'>Current searching for words similar to-&nbsp&nbsp&nbsp" + wanted + "</b><br>"
     for algo in active_algos:
         cur_algo_words = words_dict[algo]
-        cur_algo_vectors = vectors_dict[algo]
+        cur_algo_vec = vectors_dict[algo]
         f.write("Algo: " + algo + "\n")
         text += "<b align = 'center'><br> Algorithm: " + algo + "</b><br>"
 
         wanted_ind = search_for_word_as_part_of_pos(wanted, algo)
         try:
-            wanted_ind = [cur_algo_words.index(as_appears_in_algo(wanted))]
+            wanted_ind.append(cur_algo_words.index(as_appears_in_algo(wanted)))
         except:
             if len(wanted_ind) == 0:
                 text += wanted + " is unknown, sorry."
@@ -81,7 +81,7 @@ def search():
         for word_ind in wanted_ind:
             f.write("\n\nCurrent searching for words similar to:" + cur_algo_words[word_ind] + "\n")
             text += "<br>Showing results for " + as_appear_in_site(cur_algo_words[word_ind]) + '<br><br>'
-            text += get_similar_to_site_and_file(word_ind, algo, f)
+            text += get_similar_to_site_and_file(cur_algo_vec[word_ind], algo, f)
     return text + "</p>"
 
 
@@ -104,7 +104,7 @@ def analogy():
         for in_word in input_words:
             cur_word_idx = search_for_word_as_part_of_pos(in_word, algo)
             try:
-                cur_word_idx = [cur_algo_words.index(as_appears_in_algo(in_word))]
+                cur_word_idx.append(cur_algo_words.index(as_appears_in_algo(in_word)))
             except:
                 if len(cur_word_idx) == 0:
                     text += in_word + " is unknown, sorry."
@@ -125,15 +125,15 @@ def analogy():
     return text + "</p>"
 
 
-def get_similar_to_site_and_file(wanted_idx, algo, f):
+def get_similar_to_site_and_file(wanted, algo, f):
     global num_results
     text = ""
     if not words_counters_dict[algo]:
         print('regular sort')
-        inds, sims = top_similar(wanted_idx, vectors_dict[algo], results_to_show=num_results)
+        inds, sims = top_similar(wanted, vectors_dict[algo], results_to_show=num_results)
     else:
         print('smart sort')
-        inds, sims = top_similar_smart(wanted_idx, vectors_dict[algo], results_to_show=num_results)
+        inds, sims = top_similar_smart(wanted, vectors_dict[algo], results_to_show=num_results)
     for i in range(len(inds)):
         text += "similarity:" + str(sims[i]) + "&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp" + \
                 as_appear_in_site(words_dict[algo][inds[i]]) + "<br>"
@@ -170,7 +170,7 @@ def add_algorithm(path, name, multi_pos_flag=False, words_counter_flag=False):
         words_counters_dict[name] = np.load(open(join(path, 'words_counter.npy')))
 
 
-def main():
+def prepare_to_run():
     global active_algos
     global num_results
     num_results = DEFAULT_NUM_RESULTS
@@ -192,7 +192,7 @@ def main():
     add_algorithm(Path.path_w2v_nn_pos_10, "w2v main (nn&pos) 10 feat", True, True)
     add_algorithm(Path.path_w2v_nn_pos_100, "w2v main (nn&pos) 100 feat", True, True)
     add_algorithm(Path.path_w2v_nn_pos_200, "w2v main (nn&pos) 200 feat", True, True)
-    add_algorithm(Path.path_w2v_twitter, "w2v twitter")
+    add_algorithm(Path.path_w2v_twitter, "w2v twitter", False, True)
     add_algorithm(Path.path_w2v_neg_20, "w2v nn&pos more negative(20)", True, True)
     add_algorithm(Path.path_w2v_neg_20_min_20, "w2v nn&pos more negative(20) and higher min", True, True)
     active_algos = ["w2v main (nn&pos) 100 feat", "Oded's algorithm", "w2v twitter", "w2v nn&pos more negative(20)"]
@@ -200,7 +200,6 @@ def main():
     # run(host='77.126.119.142', port=80, debug=True)
     # run(host='192.168.1.15', port=80, debug=True)
     # run(host='localhost', port=7765, debug=False)
-    run(host='', port=7765, debug=False)
     # run(host='132.71.121.195', port=8079, debug=False)
 
 
@@ -209,7 +208,8 @@ if __name__ == "__main__":
     vectors_dict = {}
     multi_pos_dict = {}
     words_counters_dict = {}
-    main()
+    prepare_to_run()
+    run(host='', port=7765, debug=False)
     #
 
     # context = get_context_vec(join('result', path_w2v_nn_pos_10), ["לחם", "אב", "מלאכה", "ספר", "כנסת"],
