@@ -4,6 +4,7 @@ import sys
 from os.path import join
 from collections import Counter
 import os
+from pathes import Path
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
@@ -183,7 +184,7 @@ def get_context_vec(path, context_words, words_list):
 
 if __name__ == "__main__":
     # organize_data(join("result", path_w2v_nn_pos_200))
-    create_words_counter()
+    create_words_counter(Path.path_w2v_nn_pos_100)
     # pass
 # _, vectors = read_vectors(join('result', path_nn_pos_10, "context.txt"))
 # np.save(join('result', path_nn_pos_10, "context_vectors.npy"), vectors)
