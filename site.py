@@ -1,9 +1,9 @@
-#!/usr/bin/env python
+# !/usr/bin/env python
 # -*- coding: utf-8 -*-
+
 from bottle import *
 from utils import *
 from globals import *
-import itertools
 from pathes import Path
 
 #
