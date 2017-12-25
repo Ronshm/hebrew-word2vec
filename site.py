@@ -151,7 +151,7 @@ def search_for_word_as_part_of_pos(wanted, algo):
     return wanted_idx
 
 
-def add_algorithm(path, name, multi_pos_flag=0):
+def add_algorithm(path, name, multi_pos_flag=False, words_counter_flag=False):
     path = os.path.join('result', path.value)
     if not os.path.exists(os.path.join(path, "words_list.txt")):
         organize_data(path)
@@ -176,20 +176,20 @@ def main():
     # add_algorithm(Path.path_w2v_nn_win3, "w2v nn win 3")
     # add_algorithm(Path.path_w2v_nn_win10, "w2v nn win 10")
     # add_algorithm(Path.path_w2v_nn_win5_neg10, "w2v nn win 5 neg 10")
-    add_algorithm(Path.path_w2v_multi_pos, "w2v multi pos", 1)
-    add_algorithm(Path.path_FT_multi_pos, "fastText multi pos", 1)
+    add_algorithm(Path.path_w2v_multi_pos, "w2v multi pos", True)
+    add_algorithm(Path.path_FT_multi_pos, "fastText multi pos", True)
     # add_algorithm(Path.path_FT_nn, "fastText nn")
     add_algorithm(Path.path_FT_nn_filtered, "fastText nn filtered")
     add_algorithm(Path.path_w2v_nn_filtered, "w2v nn filtered")
     add_algorithm(Path.path_odeds_algo_200, "Oded's algorithm 200 dim feature")
     add_algorithm(Path.path_odeds_algo, "Oded's algorithm")
-    add_algorithm(Path.path_w2v_nn_pos_10, "w2v main (nn&pos) 10 feat", 1)
-    add_algorithm(Path.path_w2v_nn_pos_100, "w2v main (nn&pos) 100 feat", 1)
-    add_algorithm(Path.path_w2v_nn_pos_200, "w2v main (nn&pos) 200 feat", 1)
-    add_algorithm(Path.path_w2v_twitter, "w2v twitter", 0)
-    add_algorithm(Path.path_w2v_neg_20, "w2v nn&pos more negative(20)", 1)
-    add_algorithm(Path.path_w2v_neg_20_min_20, "w2v nn&pos more negative(20) and higher min", 1)
-    active_algos = ["w2v main (nn&pos) 100 feat", "Oded's algorithm", "fastText multi pos", "w2v multi pos"]
+    add_algorithm(Path.path_w2v_nn_pos_10, "w2v main (nn&pos) 10 feat", True, True)
+    add_algorithm(Path.path_w2v_nn_pos_100, "w2v main (nn&pos) 100 feat", True, True)
+    add_algorithm(Path.path_w2v_nn_pos_200, "w2v main (nn&pos) 200 feat", True, True)
+    add_algorithm(Path.path_w2v_twitter, "w2v twitter")
+    add_algorithm(Path.path_w2v_neg_20, "w2v nn&pos more negative(20)", True, True)
+    add_algorithm(Path.path_w2v_neg_20_min_20, "w2v nn&pos more negative(20) and higher min", True, True)
+    active_algos = ["w2v main (nn&pos) 100 feat", "Oded's algorithm", "w2v twitter", "w2v nn&pos more negative(20)"]
     active_algos = sorted(active_algos)
     # run(host='77.126.119.142', port=80, debug=True)
     # run(host='192.168.1.15', port=80, debug=True)
