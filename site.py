@@ -133,7 +133,8 @@ def get_similar_to_site_and_file(wanted, algo, f):
         inds, sims = top_similar(wanted, vectors_dict[algo], results_to_show=num_results)
     else:
         print('smart sort')
-        inds, sims = top_similar_smart(wanted, vectors_dict[algo], results_to_show=num_results)
+        inds, sims = top_similar_smart(wanted, vectors_dict[algo], words_counters_dict[algo],
+                                       results_to_show=num_results)
     for i in range(len(inds)):
         text += "similarity:" + str(sims[i]) + "&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp" + \
                 as_appear_in_site(words_dict[algo][inds[i]]) + "<br>"
