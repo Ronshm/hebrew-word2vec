@@ -133,7 +133,7 @@ def top_similar_smart(wanted, vec_set, words_counts, results_to_show=10):
     ind = np.argpartition(smart_score, -results_to_show)[-results_to_show:]
     ind = ind[np.argsort([smart_score[i] for i in ind])]
     ind = ind[::-1]
-    return [idx[i] for i in ind], [smart_score[i] for i in ind]
+    return [idx[i] for i in ind], [sims[i] for i in ind]
 
 
 def top_similar(vec, vec_set, results_to_show=10):
