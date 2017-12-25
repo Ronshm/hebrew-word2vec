@@ -130,11 +130,9 @@ def top_similar_smart(wanted, vec_set, words_counts, results_to_show=10):
     cur_words_counts = words_counts[inds]
     highest = np.max(cur_words_counts)
     smart_score = [sims[i] + 0.1 * cur_words_counts[i] / highest for i in range(len(inds))]
-    dif = [smart_score[i] - sims[i] for i in range(sims)]
     ind = np.argpartition(smart_score, -results_to_show)[-results_to_show:]
     ind = ind[np.argsort(sims[ind])]
     ind = ind[::-1]
-    print dif
     return ind, [smart_score[i] for i in ind]
 
 
