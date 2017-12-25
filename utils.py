@@ -131,9 +131,9 @@ def top_similar_smart(wanted, vec_set, words_counts, results_to_show=10):
     highest = np.max(cur_words_counts)
     smart_score = [sims[i] + 0.1 * cur_words_counts[i] / highest for i in range(len(inds))]
     ind = np.argpartition(smart_score, -results_to_show)[-results_to_show:]
-    ind = ind[np.argsort(sims[ind])]
+    ind = ind[np.argsort(smart_score[ind])]
     ind = ind[::-1]
-    return ind, [smart_score[i] for i in ind]
+    return inds, [smart_score[i] for i in ind]
 
 
 def top_similar(vec, vec_set, results_to_show=10):
