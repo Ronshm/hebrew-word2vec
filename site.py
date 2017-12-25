@@ -128,8 +128,12 @@ def analogy():
 def get_similar_to_site_and_file(wanted_idx, algo, f):
     global num_results
     text = ""
-    # inds, sims = top_similar(wanted, vectors_dict[algo], results_to_show=num_results)
-    inds, sims = top_similar_smart(wanted_idx, vectors_dict[algo], results_to_show=num_results)
+    if not words_counters_dict[algo]:
+        print('regular sort')
+        inds, sims = top_similar(wanted_idx, vectors_dict[algo], results_to_show=num_results)
+    else:
+        print('smart sort')
+        inds, sims = top_similar_smart(wanted_idx, vectors_dict[algo], results_to_show=num_results)
     for i in range(len(inds)):
         text += "similarity:" + str(sims[i]) + "&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp" + \
                 as_appear_in_site(words_dict[algo][inds[i]]) + "<br>"
@@ -152,16 +156,18 @@ def search_for_word_as_part_of_pos(wanted, algo):
 
 
 def add_algorithm(path, name, multi_pos_flag=False, words_counter_flag=False):
-    path = os.path.join('result', path.value)
-    if not os.path.exists(os.path.join(path, "words_list.txt")):
+    path = join('result', path.value)
+    if not os.path.exists(join(path, "words_list.txt")):
         organize_data(path)
-    with open(os.path.join(path, "words_list.txt"), 'r') as f:
+    with open(join(path, "words_list.txt"), 'r') as f:
         cur_words = f.readlines()
     cur_words = [word[:-1] for word in cur_words]
-    cur_vecs = np.load(os.path.join(path, "words_vectors.npy"))
+    cur_vecs = np.load(join(path, "words_vectors.npy"))
     words_dict[name] = cur_words
     vectors_dict[name] = cur_vecs
     multi_pos_dict[name] = multi_pos_flag
+    if words_counter_flag:
+        words_counters_dict[name] = np.load(open(join(path, 'words_counter.npy')))
 
 
 def main():
@@ -202,6 +208,7 @@ if __name__ == "__main__":
     words_dict = {}
     vectors_dict = {}
     multi_pos_dict = {}
+    words_counters_dict = {}
     main()
     #
 

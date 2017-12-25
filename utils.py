@@ -61,7 +61,7 @@ def create_words_counter(path):
         for i, line in enumerate(fin):
             if i % 1000000 == 0:
                 print i
-            words.extend(line.split(' ').replace('\n', ''))
+            words.extend([word.replace('\n', '') for word in line.split(' ')])
     print "done reading_data."
     words_counter = Counter(words)
 
