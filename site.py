@@ -128,7 +128,7 @@ def analogy():
 def get_similar_to_site_and_file(wanted, algo, f):
     global num_results
     text = ""
-    if not words_counters_dict[algo]:
+    if algo not in words_counters_dict.keys():
         print('regular sort')
         inds, sims = top_similar(wanted, vectors_dict[algo], results_to_show=num_results)
     else:
