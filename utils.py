@@ -2,6 +2,8 @@ import numpy as np
 from numpy import linalg as LA
 import sys
 from os.path import join
+from collections import Counter
+import os
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
@@ -45,6 +47,27 @@ def read_vectors(model_path):
                 print("checkit")
                 continue
     return words, vectors
+
+
+def create_words_counter(path):
+    counter_vec = []
+    with open(os.path.join(path, "words_list.txt"), 'r') as f:
+        words = f.readlines()
+    words_in_order = [word[:-1] for word in words]
+
+    with open('data/wiki-processed-data.txt', 'r') as fin:
+        words = []
+        for i, line in enumerate(fin):
+            if i % 1000000 == 0:
+                print i
+            words.extend(line.split(' ').split('\t').replace('\n', ''))
+    print "done reading_data."
+    words_counter = Counter(words)
+
+    for word in words_in_order:
+        counter_vec.append(words_counter[word])
+    with open(join(path, 'words_counter.npy'), 'w') as f:
+        np.save(f, np.array(counter_vec))
 
 
 def read_odeds_vectors(model_path):
