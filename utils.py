@@ -199,9 +199,9 @@ def get_context_vec(path, context_words, words_list):
 
 
 if __name__ == "__main__":
-    organize_data(join("result", Path.path_w2v_neg_20), context=True)
-    organize_data(join("result", Path.path_w2v_neg_20_min_20), context=True)
-    organize_data(join("result", Path.path_w2v_twitter), context=True)
+    organize_data(join("result", Path.path_w2v_neg_20.value), context=True)
+    organize_data(join("result", Path.path_w2v_neg_20_min_20.value), context=True)
+    organize_data(join("result", Path.path_w2v_twitter.value), context=True)
     # create_words_counter(join('result', Path.path_w2v_twitter.value))
     # pass
 # _, vectors = read_vectors(join('result', path_nn_pos_10, "context.txt"))
