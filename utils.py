@@ -103,15 +103,17 @@ def read_odeds_vectors(model_path):
     return words, vectors
 
 
-def organize_data(path):
-    words, vectors = read_vectors(join(path, "out.txt"))
+def organize_data(path, context=False):
+    file_names = ['context.txt', 'context_vectors.npy'] if context else ['out.txt', 'words_vectors.npy']
+    words, vectors = read_vectors(join(path, file_names[0]))
     vectors = np.array(vectors)
-    np.save(join(path, "words_vectors.npy"), vectors)
+    np.save(join(path, file_names[1]), vectors)
     print("vec saved")
-    with open(join(path, "words_list.txt"), 'w') as f:
-        for w in words:
-            f.write(w)
-    print("words saved")
+    if not context:
+        with open(join(path, "words_list.txt"), 'w') as f:
+            for w in words:
+                f.write(w)
+        print("words saved")
 
 
 def organize_odeds_data(path):
@@ -197,8 +199,10 @@ def get_context_vec(path, context_words, words_list):
 
 
 if __name__ == "__main__":
-    # organize_data(join("result", path_w2v_nn_pos_200))
-    create_words_counter(join('result', Path.path_w2v_twitter.value))
+    organize_data(join("result", Path.path_w2v_neg_20), context=True)
+    organize_data(join("result", Path.path_w2v_neg_20_min_20), context=True)
+    organize_data(join("result", Path.path_w2v_twitter), context=True)
+    # create_words_counter(join('result', Path.path_w2v_twitter.value))
     # pass
 # _, vectors = read_vectors(join('result', path_nn_pos_10, "context.txt"))
 # np.save(join('result', path_nn_pos_10, "context_vectors.npy"), vectors)
