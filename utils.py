@@ -172,7 +172,7 @@ def as_appear_in_site(word):
 
 def get_similar(wanted, words, vecs):
     text = ""
-    inds, sims = top_similar_smart(wanted, vecs)
+    inds, sims = top_similar(wanted, vecs)
     for i in range(len(inds)):
         text += "similarity::" + str(sims[i]) + "&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp" + words[inds[i]] + \
                 "<br>"
@@ -181,7 +181,7 @@ def get_similar(wanted, words, vecs):
 
 def get_similar_console(wanted, words, vecs):
     text = ""
-    inds, sims = top_similar_smart(wanted, vecs)
+    inds, sims = top_similar(wanted, vecs)
     for i in range(len(inds)):
         text += "similarity::" + str(sims[i]) + " " + words[inds[i]] + "\n"
     return text

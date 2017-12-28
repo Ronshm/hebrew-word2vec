@@ -18,7 +18,7 @@ def get_context_vec(path, context_words, words_list):
 
 
 if __name__ == '__main__':
-    path = Path.path_w2v_neg_20.value
+    path = Path.path_w2v_nn_pos_100.value
     with open(join("result", path, "words_list.txt"), 'r') as f:
         cur_words = f.readlines()
     words = [word[:-1] for word in cur_words]
