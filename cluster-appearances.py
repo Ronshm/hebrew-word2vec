@@ -45,11 +45,11 @@ def read_appearances_map_from_file():
 def convert_words_window_to_vec(window, w2v_dict):
     window_vec = np.zeros(100)
     for word in window:
-        cur_word_vec = w2v_dict[word]
-        if not cur_word_vec:
+        if word not in w2v_dict.keys():
             window.remove(word)
             print 'unrecognized word'
             continue
+        cur_word_vec = w2v_dict[word]
         window_vec += cur_word_vec
     window_vec /= len(window)
     return window_vec
@@ -82,7 +82,7 @@ def part_one():
     write_appearances_map_to_file(appearances_map)
     d = get_w2v_dict(join('result', Path.path_research.value))
     windows_vecs = create_windows_vecs(appearances_map, d)
-    np.save('windows-vecs.npy', windows_vecs)
+    np.save(join('result', 'research', 'windows-vecs.npy'), windows_vecs)
     return appearances_map, windows_vecs
 
 
