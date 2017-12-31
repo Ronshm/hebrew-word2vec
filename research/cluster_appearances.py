@@ -1,11 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from utils import *
 from copy import deepcopy
 from sklearn.cluster import KMeans
 import random
 import cPickle
 from sklearn.metrics import *
+import numpy as np
+from os.path import join, exists
 
 
 def get_appearances_map(wanted_word):
@@ -79,7 +80,7 @@ def get_w2v_dict(path):
 
 
 def part_one(wanted_word):
-    if os.path.exists(join('data', 'windows-vecs.npy')):
+    if exists(join('data', 'windows-vecs.npy')):
         appearances_map = read_appearances_map_from_file(join('data', 'appearance_map.txt'))
         windows_vecs = np.load(join('data', 'windows-vecs.npy'))
         return appearances_map, windows_vecs
@@ -113,7 +114,7 @@ def part_two(appearance_map, windows_vecs):
 
 
 def load_test_set():
-    if os.path.exists(join('data', "test-set.p")):
+    if exists(join('data', "test-set.p")):
         test_set = cPickle.load(open(join('data', "test-set.p"), "wb"))
     else:
         x_class1 = read_appearances_map_from_file(join('data', 'test-class1.txt'))
