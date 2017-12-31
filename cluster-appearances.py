@@ -7,7 +7,7 @@ from copy import deepcopy
 def get_appearances_map(wanted_word):
     appearances_windows_map = []
     with open('data/wiki-data-new.txt', 'r') as fin:
-        with open('errors.txt', 'r') as fout:
+        with open('errors.txt', 'w') as fout:
             for i, line in enumerate(fin):
                 if (i + 1) % 1000000 == 0:
                     print i
