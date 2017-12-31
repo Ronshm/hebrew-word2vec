@@ -19,6 +19,9 @@ def get_appearances_map(wanted_word):
             for i, word in enumerate(words):
                 if word == wanted_word:
                     window = words[max(i - 3, 0): i + 4]
+                    if len(window) < 3:
+                        print "short"
+                        continue
                     appearances_windows_map.append(window)
     return appearances_windows_map
 
