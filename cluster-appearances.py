@@ -19,9 +19,6 @@ def get_appearances_map(wanted_word):
             for i, word in enumerate(words):
                 if word == wanted_word:
                     window = words[max(i - 3, 0): i + 4]
-                    if len(window) < 3:
-                        print "short"
-                        continue
                     appearances_windows_map.append(window)
     return appearances_windows_map
 
@@ -49,7 +46,8 @@ def convert_words_window_to_vec(window, w2v_dict):
     with open('errors.txt', 'w') as fout:
         for word in window:
             if word not in w2v_dict.keys():
-                fout.write("word: " + word + '\n')
+                fout.write("word: " + word)
+                fout.write('\n')
                 window.remove(word)
                 print 'unrecognized word'
                 continue
@@ -62,9 +60,6 @@ def convert_words_window_to_vec(window, w2v_dict):
 def create_windows_vecs(appearances_map, w2v_dict, wanted_word):
     vecs = []
     for window in appearances_map:
-        if len(window) < 3:
-            print "short2"
-            continue
         vecs.append(convert_words_window_to_vec([word for word in window if not word == wanted_word], w2v_dict))
     return np.array(vecs)
 
