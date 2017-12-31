@@ -7,17 +7,22 @@ from copy import deepcopy
 def get_appearances_map(wanted_word):
     appearances_windows_map = []
     with open('data/wiki-data-new.txt', 'r') as fin:
-        for i, line in enumerate(fin):
-            if (i + 1) % 1000000 == 0:
-                print i
-                # break
-            words = line.split(' ')
-            for i, word in enumerate(words):
-                if word == wanted_word:
-                    window = words[max(i - 2, 0): i + 3].remove(wanted_word)
-                    if not window:
-                        print words
-                    appearances_windows_map.append(window)
+        with open('errors.txt', 'r') as fout:
+            for i, line in enumerate(fin):
+                if (i + 1) % 1000000 == 0:
+                    print i
+                    # break
+                words = line.split(' ')
+                words[-1] = words[-1][:-1]
+                for i, word in enumerate(words):
+                    if word == wanted_word:
+                        window = words[max(i - 2, 0): i + 3].remove(wanted_word)
+                        if not window:
+                            for word in words:
+                                fout.write(word)
+                            fout.write('\n')
+                            continue
+                        appearances_windows_map.append(window)
     return appearances_windows_map
 
 
