@@ -19,6 +19,9 @@ def get_appearances_map(wanted_word):
             for i, word in enumerate(words):
                 if word == wanted_word:
                     window = words[max(i - 3, 0): i + 4]
+                    if len(window) < 3:
+                        print "short"
+                        continue
                     appearances_windows_map.append(window)
     return appearances_windows_map
 
@@ -59,6 +62,9 @@ def convert_words_window_to_vec(window, w2v_dict):
 def create_windows_vecs(appearances_map, w2v_dict, wanted_word):
     vecs = []
     for window in appearances_map:
+        if len(window) < 3:
+            print "short2"
+            continue
         vecs.append(convert_words_window_to_vec([word for word in window if not word == wanted_word], w2v_dict))
     return np.array(vecs)
 
@@ -75,7 +81,7 @@ def get_w2v_dict(path):
 
 
 def part_one(wanted_word):
-    if os.path.exists(join('result', 'research', 'windows-vecs.npy')):
+    if False:  # os.path.exists(join('result', 'research', 'windows-vecs.npy')):
         appearances_map = read_appearances_map_from_file()
         windows_vecs = np.load(join('result', 'research', 'windows-vecs.npy'))
         return appearances_map, windows_vecs
