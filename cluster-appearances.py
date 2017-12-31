@@ -44,10 +44,9 @@ def read_appearances_map_from_file():
 def convert_words_window_to_vec(window, w2v_dict):
     window_vec = np.zeros(100)
     with open('errors.txt', 'w') as fout:
-
         for word in window:
             if word not in w2v_dict.keys():
-                fout.write(word + '\n')
+                fout.write("word: " + word + '\n')
                 window.remove(word)
                 print 'unrecognized word'
                 continue
@@ -60,8 +59,7 @@ def convert_words_window_to_vec(window, w2v_dict):
 def create_windows_vecs(appearances_map, w2v_dict, wanted_word):
     vecs = []
     for window in appearances_map:
-        window.remove(wanted_word)
-        vecs.append(convert_words_window_to_vec(window, w2v_dict))
+        vecs.append(convert_words_window_to_vec([word for word in window if not word == wanted_word], w2v_dict))
     return np.array(vecs)
 
 
@@ -82,11 +80,9 @@ def part_one(wanted_word):
         windows_vecs = np.load(join('result', 'research', 'windows-vecs.npy'))
         return appearances_map, windows_vecs
     appearances_map = get_appearances_map(wanted_word)
-    print len(appearances_map)
     write_appearances_map_to_file(appearances_map)
     d = get_w2v_dict(join('result', Path.path_research.value))
     windows_vecs = create_windows_vecs(appearances_map, d, wanted_word)
-    print len(windows_vecs)
     np.save(join('result', 'research', 'windows-vecs.npy'), windows_vecs)
     return appearances_map, windows_vecs
 
