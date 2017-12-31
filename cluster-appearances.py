@@ -42,7 +42,7 @@ def read_appearances_map_from_file():
 
 
 def convert_words_window_to_vec(window, w2v_dict):
-    window_vec = np.zeros(w2v_dict.values[0].shape)
+    window_vec = np.zeros(100)
     for word in window:
         window_vec += w2v_dict[word]
     window_vec /= len(window)
