@@ -14,7 +14,8 @@ def get_appearances_map(wanted_word):
             words = line.split(' ')
             for i, word in enumerate(words):
                 if word == wanted_word:
-                    appearances_windows_map.append(words[max(i - 2, 0): i + 3])
+                    window = words[max(i - 2, 0): i + 3].remove(wanted_word)
+                    appearances_windows_map.append(window)
     return appearances_windows_map
 
 
@@ -37,7 +38,7 @@ def read_appearances_map_from_file():
 
 
 def convert_words_window_to_vec(window, w2v_dict):
-    window_vec = np.zeros(np.shape(w2v_dict.values[0]))
+    window_vec = np.zeros(w2v_dict.values[0].shape)
     for word in window:
         window_vec += w2v_dict[word]
     window_vec /= len(window)
