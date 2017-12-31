@@ -91,8 +91,8 @@ def part_one(wanted_word):
 def part_two(appearance_map, windows_vecs):
     kmeans = KMeans(n_clusters=2, random_state=0).fit(windows_vecs)
     labels = kmeans.labels_
-    f1 = open('cluster1_words.txt', 'w')
-    f2 = open('cluster2_words.txt', 'w')
+    f1 = open('cluster1_sentences.txt', 'w')
+    f2 = open('cluster2_sentences.txt', 'w')
     cluster1_windows = []
     cluster2_windows = []
     for i, win in enumerate(appearance_map):
