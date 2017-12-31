@@ -13,7 +13,8 @@ def get_appearances_map(wanted_word):
                     print i
                     # break
                 words = line.split(' ')
-                words[-1] = words[-1][:-1]
+                for word in words:
+                    word.replace(" ", '')
                 for i, word in enumerate(words):
                     if word == wanted_word:
                         window = words[max(i - 2, 0): i + 3].remove(wanted_word)
