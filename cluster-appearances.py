@@ -17,12 +17,8 @@ def get_appearances_map(wanted_word):
                     word.replace(" ", '')
                 for i, word in enumerate(words):
                     if word == wanted_word:
-                        window = words[max(i - 2, 0): i + 3].remove(wanted_word)
-                        if not window:
-                            for word in words:
-                                fout.write(word)
-                            fout.write('\n')
-                            continue
+                        window = words[max(i - 2, 0): i + 3]
+                        window.remove(wanted_word)
                         appearances_windows_map.append(window)
     return appearances_windows_map
 
