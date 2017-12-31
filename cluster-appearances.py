@@ -3,6 +3,7 @@
 from utils import *
 from copy import deepcopy
 from sklearn.cluster import KMeans
+import random
 
 
 def get_appearances_map(wanted_word):
@@ -23,8 +24,8 @@ def get_appearances_map(wanted_word):
     return appearances_windows_map
 
 
-def write_appearances_map_to_file(appearances_map):
-    with open(join('result', 'research', 'appearance_map.txt'), 'w') as fout:
+def write_appearances_map_to_file(appearances_map, path):
+    with open(path, 'w') as fout:
         for window in appearances_map:
             for word in window:
                 fout.write(word + ' ')
@@ -81,7 +82,7 @@ def part_one(wanted_word):
         windows_vecs = np.load(join('result', 'research', 'windows-vecs.npy'))
         return appearances_map, windows_vecs
     appearances_map = get_appearances_map(wanted_word)
-    write_appearances_map_to_file(appearances_map)
+    write_appearances_map_to_file(appearances_map, join('result', 'research', 'appearance_map.txt'))
     d = get_w2v_dict(join('result', Path.path_research.value))
     windows_vecs = create_windows_vecs(appearances_map, d, wanted_word)
     np.save(join('result', 'research', 'windows-vecs.npy'), windows_vecs)
@@ -111,7 +112,9 @@ def part_two(appearance_map, windows_vecs):
 
 def main():
     appearances_map, windows_vecs = part_one('בצל')
-    cluster1_windows, cluster2_windows, labels = part_two(appearances_map, windows_vecs)
+    random.shuffle(appearances_map)
+    write_appearances_map_to_file(appearances_map, join('result', 'research', 'test-sentences.txt'))
+    # cluster1_windows, cluster2_windows, labels = part_two(appearances_map, windows_vecs)
 
 
 if __name__ == '__main__':
