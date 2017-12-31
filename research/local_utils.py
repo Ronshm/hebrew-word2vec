@@ -37,6 +37,7 @@ def read_appearances_map_from_file(path):
     windows = []
     with open(path, 'r') as fin:
         for i, line in enumerate(fin):
+            print i
             words = line.split(' ')
             words[-1].replace('\n', '')
             windows.append(deepcopy(words))
