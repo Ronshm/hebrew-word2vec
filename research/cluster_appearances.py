@@ -41,6 +41,7 @@ def part_two(appearance_map, windows_vecs):
 
 def evaluate(kmeans):
     test_set = load_test_set()
+    print test_set
     predicted_labels = kmeans.predict(test_set['x'])
     true_labels = test_set['y']
     if accuracy_score(true_labels, predicted_labels) < 0.5:
