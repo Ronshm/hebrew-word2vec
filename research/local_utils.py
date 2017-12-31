@@ -83,10 +83,12 @@ def load_test_set():
     else:
         x_class1 = read_appearances_map_from_file(join('data', 'test-class1.txt'))
         # x_class2 = read_appearances_map_from_file(join('data', 'test-class2.txt'))
+        print 1, len(x_class1)
         d = get_w2v_dict('data')
         x = x_class1
         # x.extend(x_class2)
         data_vecs = create_windows_vecs(x, d, 'בצל')
+        print 2, len(data_vecs)
         labels = [0 for _ in range(len(x_class1))]
         # labels.extend([1 for _ in range(len(x_class2))])
         test_set = {'x': data_vecs, 'y': labels}
