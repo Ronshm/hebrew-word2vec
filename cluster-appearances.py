@@ -15,6 +15,8 @@ def get_appearances_map(wanted_word):
             for i, word in enumerate(words):
                 if word == wanted_word:
                     window = words[max(i - 2, 0): i + 3].remove(wanted_word)
+                    if not window:
+                        print words
                     appearances_windows_map.append(window)
     return appearances_windows_map
 
@@ -22,11 +24,8 @@ def get_appearances_map(wanted_word):
 def write_appearances_map_to_file(appearances_map):
     with open(join('result', 'research', 'appearance_map.txt'), 'w') as fout:
         for window in appearances_map:
-            try:
-                for word in window:
-                    fout.write(word + ' ')
-            except:
-                print "check win: ", window
+            for word in window:
+                fout.write(word + ' ')
             fout.write('\n')
 
 
