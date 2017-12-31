@@ -20,16 +20,19 @@ def get_appearances_map(wanted_word):
 
 
 def write_appearances_map_to_file(appearances_map):
-    with open(join('result', 'research', 'appearance_map'), 'w') as fout:
+    with open(join('result', 'research', 'appearance_map.txt'), 'w') as fout:
         for window in appearances_map:
-            for word in window:
-                fout.write(word + ' ')
+            try:
+                for word in window:
+                    fout.write(word + ' ')
+            except:
+                print "check win: ", window
             fout.write('\n')
 
 
 def read_appearances_map_from_file():
     windows = []
-    with open(join('result', 'research', 'appearance_map'), 'r') as fin:
+    with open(join('result', 'research', 'appearance_map.txt'), 'r') as fin:
         for i, line in enumerate(fin):
             words = line.split(' ')
             words[-1].replace('\n', '')
@@ -64,15 +67,15 @@ def get_w2v_dict(path):
 
 
 def part_one():
-    if os.path.exists(join('result', 'research', 'appearance_map')):
+    if os.path.exists(join('result', 'research', 'windows-vecs.npy')):
         appearances_map = read_appearances_map_from_file()
-        windows_vecs = np.load('windows_vecs.npy')
+        windows_vecs = np.load('windows-vecs.npy')
         return appearances_map, windows_vecs
     appearances_map = get_appearances_map('בצל')
     write_appearances_map_to_file(appearances_map)
     d = get_w2v_dict(join('result', Path.path_research.value))
     windows_vecs = create_windows_vecs(appearances_map, d)
-    np.save('windows_vecs.npy', windows_vecs)
+    np.save('windows-vecs.npy', windows_vecs)
     return appearances_map, windows_vecs
 
 
