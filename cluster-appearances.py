@@ -18,8 +18,7 @@ def get_appearances_map(wanted_word):
                 word.replace("\n", '')
             for i, word in enumerate(words):
                 if word == wanted_word:
-                    window = words[max(i - 2, 0): i + 3]
-                    window.remove(wanted_word)
+                    window = words[max(i - 3, 0): i + 4]
                     appearances_windows_map.append(window)
     return appearances_windows_map
 
@@ -42,9 +41,10 @@ def read_appearances_map_from_file():
     return windows
 
 
-def convert_words_window_to_vec(window, w2v_dict):
+def convert_words_window_to_vec(window, w2v_dict, wanted_word):
     window_vec = np.zeros(100)
     with open('errors.txt', 'w') as fout:
+        window.remove(wanted_word)
         for word in window:
             if word not in w2v_dict.keys():
                 fout.write(word + '\n')
@@ -78,7 +78,7 @@ def get_w2v_dict(path):
 def part_one():
     if os.path.exists(join('result', 'research', 'windows-vecs.npy')):
         appearances_map = read_appearances_map_from_file()
-        windows_vecs = np.load('windows-vecs.npy')
+        windows_vecs = np.load(join('result', 'research', 'windows-vecs.npy'))
         return appearances_map, windows_vecs
     appearances_map = get_appearances_map('בצל')
     write_appearances_map_to_file(appearances_map)
