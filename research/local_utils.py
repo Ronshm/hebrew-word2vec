@@ -79,7 +79,7 @@ def get_w2v_dict(path):
 
 def load_test_set():
     if exists(join('data', "test-set.p")):
-        test_set = cPickle.load(open(join('data', "test-set.p"), "wb"))
+        test_set = cPickle.load(open(join('data', "test-set.p"), "rb"))
     else:
         x_class1 = read_appearances_map_from_file(join('data', 'test-class1.txt'))
         x_class2 = read_appearances_map_from_file(join('data', 'test-class2.txt'))
