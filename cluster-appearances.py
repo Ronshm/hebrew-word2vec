@@ -82,9 +82,11 @@ def part_one(wanted_word):
         windows_vecs = np.load(join('result', 'research', 'windows-vecs.npy'))
         return appearances_map, windows_vecs
     appearances_map = get_appearances_map(wanted_word)
+    print len(appearances_map)
     write_appearances_map_to_file(appearances_map)
     d = get_w2v_dict(join('result', Path.path_research.value))
     windows_vecs = create_windows_vecs(appearances_map, d, wanted_word)
+    print len(windows_vecs)
     np.save(join('result', 'research', 'windows-vecs.npy'), windows_vecs)
     return appearances_map, windows_vecs
 
@@ -96,8 +98,6 @@ def part_two(appearance_map, windows_vecs):
     f2 = open('cluster2_words.txt', 'w')
     cluster1_windows = []
     cluster2_windows = []
-    print len(appearance_map)
-    print len(windows_vecs)
     for i, win in enumerate(appearance_map):
         if labels[i]:
             f = f1
