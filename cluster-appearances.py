@@ -41,10 +41,10 @@ def read_appearances_map_from_file():
     return windows
 
 
-def convert_words_window_to_vec(window, w2v_dict, wanted_word):
+def convert_words_window_to_vec(window, w2v_dict):
     window_vec = np.zeros(100)
     with open('errors.txt', 'w') as fout:
-        window.remove(wanted_word)
+
         for word in window:
             if word not in w2v_dict.keys():
                 fout.write(word + '\n')
@@ -57,9 +57,10 @@ def convert_words_window_to_vec(window, w2v_dict, wanted_word):
     return window_vec
 
 
-def create_windows_vecs(appearances_map, w2v_dict):
+def create_windows_vecs(appearances_map, w2v_dict, wanted_word):
     vecs = []
     for window in appearances_map:
+        window.remove(wanted_word)
         vecs.append(convert_words_window_to_vec(window, w2v_dict))
     return np.array(vecs)
 
@@ -75,15 +76,15 @@ def get_w2v_dict(path):
     return d
 
 
-def part_one():
+def part_one(wanted_word):
     if os.path.exists(join('result', 'research', 'windows-vecs.npy')):
         appearances_map = read_appearances_map_from_file()
         windows_vecs = np.load(join('result', 'research', 'windows-vecs.npy'))
         return appearances_map, windows_vecs
-    appearances_map = get_appearances_map('בצל')
+    appearances_map = get_appearances_map(wanted_word)
     write_appearances_map_to_file(appearances_map)
     d = get_w2v_dict(join('result', Path.path_research.value))
-    windows_vecs = create_windows_vecs(appearances_map, d)
+    windows_vecs = create_windows_vecs(appearances_map, d, wanted_word)
     np.save(join('result', 'research', 'windows-vecs.npy'), windows_vecs)
     return appearances_map, windows_vecs
 
@@ -110,7 +111,7 @@ def part_two(appearance_map, windows_vecs):
 
 
 def main():
-    appearances_map, windows_vecs = part_one()
+    appearances_map, windows_vecs = part_one('בצל')
     cluster1_windows, cluster2_windows, labels = part_two(appearances_map, windows_vecs)
 
 
