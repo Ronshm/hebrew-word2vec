@@ -24,4 +24,3 @@ class Path(Enum):
     path_w2v_twitter = 'twitter-w2v'
     path_w2v_neg_20 = 'w2v-nn-pos-neg-20'
     path_w2v_neg_20_min_20 = 'w2v-nn-pos-neg-20-min-20'
-    path_research = 'research'

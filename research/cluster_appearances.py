@@ -4,11 +4,13 @@ from utils import *
 from copy import deepcopy
 from sklearn.cluster import KMeans
 import random
+import cPickle
+from sklearn.metrics import *
 
 
 def get_appearances_map(wanted_word):
     appearances_windows_map = []
-    with open('data/wiki-data-new.txt', 'r') as fin:
+    with open('../data/wiki-data-new.txt', 'r') as fin:
         for i, line in enumerate(fin):
             if (i + 1) % 1000000 == 0:
                 print i
@@ -32,9 +34,9 @@ def write_appearances_map_to_file(appearances_map, path):
             fout.write('\n')
 
 
-def read_appearances_map_from_file():
+def read_appearances_map_from_file(path):
     windows = []
-    with open(join('result', 'research', 'appearance_map.txt'), 'r') as fin:
+    with open(path, 'r') as fin:
         for i, line in enumerate(fin):
             words = line.split(' ')
             words[-1].replace('\n', '')
@@ -77,23 +79,23 @@ def get_w2v_dict(path):
 
 
 def part_one(wanted_word):
-    if os.path.exists(join('result', 'research', 'windows-vecs.npy')):
-        appearances_map = read_appearances_map_from_file()
-        windows_vecs = np.load(join('result', 'research', 'windows-vecs.npy'))
+    if os.path.exists(join('data', 'windows-vecs.npy')):
+        appearances_map = read_appearances_map_from_file(join('data', 'appearance_map.txt'))
+        windows_vecs = np.load(join('data', 'windows-vecs.npy'))
         return appearances_map, windows_vecs
     appearances_map = get_appearances_map(wanted_word)
-    write_appearances_map_to_file(appearances_map, join('result', 'research', 'appearance_map.txt'))
-    d = get_w2v_dict(join('result', Path.path_research.value))
+    write_appearances_map_to_file(appearances_map, join('data', 'appearance_map.txt'))
+    d = get_w2v_dict('data')
     windows_vecs = create_windows_vecs(appearances_map, d, wanted_word)
-    np.save(join('result', 'research', 'windows-vecs.npy'), windows_vecs)
+    np.save(join('data', 'windows-vecs.npy'), windows_vecs)
     return appearances_map, windows_vecs
 
 
 def part_two(appearance_map, windows_vecs):
     kmeans = KMeans(n_clusters=2, random_state=0).fit(windows_vecs)
     labels = kmeans.labels_
-    f1 = open('cluster1_sentences.txt', 'w')
-    f2 = open('cluster2_sentences.txt', 'w')
+    f1 = open(join('data', 'cluster1_sentences.txt'), 'w')
+    f2 = open(join('data', 'cluster2_sentences.txt'), 'w')
     cluster1_windows = []
     cluster2_windows = []
     for i, win in enumerate(appearance_map):
@@ -107,14 +109,44 @@ def part_two(appearance_map, windows_vecs):
             f.write(word + ' ')
         f.write('\n')
         cluster.append(win)
-    return cluster1_windows, cluster2_windows, labels
+    return kmeans
+
+
+def load_test_set():
+    if os.path.exists(join('data', "test-set.p")):
+        test_set = cPickle.load(open(join('data', "test-set.p"), "wb"))
+    else:
+        x_class1 = read_appearances_map_from_file(join('data', 'test-class1.txt'))
+        x_class2 = read_appearances_map_from_file(join('data', 'test-class2.txt'))
+        d = get_w2v_dict('data')
+        x = []
+        x.extend(x_class1)
+        x.extend(x_class2)
+        data_vecs = create_windows_vecs(x, d, 'בצל')
+        labels = [0 for _ in range(len(x_class1))]
+        labels.extend([1 for _ in range(len(x_class2))])
+        test_set = {'x': data_vecs, 'y': labels}
+        cPickle.dump(test_set, open(join('data', "test-set.p"), "wb"))
+    return test_set
+
+
+def evaluate(kmeans):
+    test_set = load_test_set()
+    predicted_labels = kmeans.predict(test_set['x'])
+    true_labels = test_set['y']
+    if accuracy_score(true_labels, predicted_labels) < 0.5:
+        predicted_labels = [1 - l for l in predicted_labels]
+    print "accuracy:", accuracy_score(true_labels, predicted_labels)
+    print "recall class 1:", recall_score(true_labels, predicted_labels, pos_label=0)
+    print "precision class 1:", precision_score(true_labels, predicted_labels, pos_label=0)
+    print "recall class 2:", recall_score(true_labels, predicted_labels, pos_label=1)
+    print "precision class 2:", precision_score(true_labels, predicted_labels, pos_label=1)
 
 
 def main():
     appearances_map, windows_vecs = part_one('בצל')
-    random.shuffle(appearances_map)
-    write_appearances_map_to_file(appearances_map, join('result', 'research', 'test-sentences.txt'))
-    # cluster1_windows, cluster2_windows, labels = part_two(appearances_map, windows_vecs)
+    kmeans = part_two(appearances_map, windows_vecs)
+    evaluate(kmeans)
 
 
 if __name__ == '__main__':

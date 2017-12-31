@@ -199,8 +199,7 @@ def get_context_vec(path, context_words, words_list):
 
 
 if __name__ == "__main__":
-    organize_data(join("result", Path.path_research.value), context=False)
-    organize_data(join("result", Path.path_research.value), context=True)
+    pass
     # organize_data(join("result", Path.path_w2v_neg_20_min_20.value), context=True)
     # organize_data(join("result", Path.path_w2v_twitter.value), context=True)
     # create_words_counter(join('result', Path.path_w2v_twitter.value))
