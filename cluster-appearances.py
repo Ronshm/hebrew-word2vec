@@ -97,7 +97,7 @@ def part_two(appearance_map, windows_vecs):
     cluster1_windows = []
     cluster2_windows = []
     print len(appearance_map)
-    print len(labels)
+    print len(windows_vecs)
     for i, win in enumerate(appearance_map):
         if labels[i]:
             f = f1
