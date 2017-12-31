@@ -14,7 +14,7 @@ def get_appearances_map(wanted_word):
             words = line.split(' ')
             for i, word in enumerate(words):
                 if word == wanted_word:
-                    appearances_windows_map.append(words[max(i - 2, 0), i + 3])
+                    appearances_windows_map.append(words[max(i - 2, 0): i + 3])
     return appearances_windows_map
 
 
