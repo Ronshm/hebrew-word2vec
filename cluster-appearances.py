@@ -76,7 +76,7 @@ def get_w2v_dict(path):
 
 
 def part_one(wanted_word):
-    if False:  # os.path.exists(join('result', 'research', 'windows-vecs.npy')):
+    if os.path.exists(join('result', 'research', 'windows-vecs.npy')):
         appearances_map = read_appearances_map_from_file()
         windows_vecs = np.load(join('result', 'research', 'windows-vecs.npy'))
         return appearances_map, windows_vecs
