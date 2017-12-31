@@ -96,6 +96,8 @@ def part_two(appearance_map, windows_vecs):
     f2 = open('cluster2_words.txt', 'w')
     cluster1_windows = []
     cluster2_windows = []
+    print len(appearance_map)
+    print len(labels)
     for i, win in enumerate(appearance_map):
         if labels[i]:
             f = f1
