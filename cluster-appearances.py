@@ -44,13 +44,15 @@ def read_appearances_map_from_file():
 
 def convert_words_window_to_vec(window, w2v_dict):
     window_vec = np.zeros(100)
-    for word in window:
-        if word not in w2v_dict.keys():
-            window.remove(word)
-            print 'unrecognized word'
-            continue
-        cur_word_vec = w2v_dict[word]
-        window_vec += cur_word_vec
+    with open('errors.txt', 'w') as fout:
+        for word in window:
+            if word not in w2v_dict.keys():
+                fout.write(word + '\n')
+                window.remove(word)
+                print 'unrecognized word'
+                continue
+            cur_word_vec = w2v_dict[word]
+            window_vec += cur_word_vec
     window_vec /= len(window)
     return window_vec
 
