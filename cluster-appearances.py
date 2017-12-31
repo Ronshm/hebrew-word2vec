@@ -12,10 +12,7 @@ def get_appearances_map(wanted_word):
             if (i + 1) % 1000000 == 0:
                 print i
                 # break
-            words = line.split(' ')
-            for word in words:
-                word.replace(" ", '')
-                word.replace("\n", '')
+            words = line.split()
             for i, word in enumerate(words):
                 if word == wanted_word:
                     window = words[max(i - 3, 0): i + 4]
