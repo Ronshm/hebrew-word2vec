@@ -8,19 +8,19 @@ from sklearn.cluster import KMeans
 def get_appearances_map(wanted_word):
     appearances_windows_map = []
     with open('data/wiki-data-new.txt', 'r') as fin:
-        with open('errors.txt', 'w') as fout:
-            for i, line in enumerate(fin):
-                if (i + 1) % 1000000 == 0:
-                    print i
-                    # break
-                words = line.split(' ')
-                for word in words:
-                    word.replace(" ", '')
-                for i, word in enumerate(words):
-                    if word == wanted_word:
-                        window = words[max(i - 2, 0): i + 3]
-                        window.remove(wanted_word)
-                        appearances_windows_map.append(window)
+        for i, line in enumerate(fin):
+            if (i + 1) % 1000000 == 0:
+                print i
+                # break
+            words = line.split(' ')
+            for word in words:
+                word.replace(" ", '')
+                word.replace("\n", '')
+            for i, word in enumerate(words):
+                if word == wanted_word:
+                    window = words[max(i - 2, 0): i + 3]
+                    window.remove(wanted_word)
+                    appearances_windows_map.append(window)
     return appearances_windows_map
 
 
