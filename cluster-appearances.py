@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 from utils import *
 from copy import deepcopy
+from sklearn.cluster import KMeans
 
 
 def get_appearances_map(wanted_word):
@@ -85,8 +86,30 @@ def part_one():
     return appearances_map, windows_vecs
 
 
+def part_two(appearance_map, windows_vecs):
+    kmeans = KMeans(n_clusters=2, random_state=0).fit(windows_vecs)
+    labels = kmeans.labels_
+    f1 = open('cluster1_words.txt', 'w')
+    f2 = open('cluster2_words.txt', 'w')
+    cluster1_windows = []
+    cluster2_windows = []
+    for i, win in enumerate(appearance_map):
+        if labels[i]:
+            f = f1
+            cluster = cluster1_windows
+        else:
+            f = f2
+            cluster = cluster2_windows
+        for word in win:
+            f.write(word + ' ')
+        f.write('\n')
+        cluster.append(win)
+    return cluster1_windows, cluster2_windows, labels
+
+
 def main():
-    part_one()
+    appearances_map, windows_vecs = part_one()
+    cluster1_windows, cluster2_windows, labels = part_two(appearances_map, windows_vecs)
 
 
 if __name__ == '__main__':
