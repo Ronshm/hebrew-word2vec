@@ -37,7 +37,6 @@ def read_appearances_map_from_file(path):
     windows = []
     with open(path, 'r') as fin:
         for i, line in enumerate(fin):
-            print i
             words = line.split(' ')
             words[-1].replace('\n', '')
             windows.append(deepcopy(words))
@@ -83,15 +82,14 @@ def load_test_set():
         test_set = cPickle.load(open(join('data', "test-set.p"), "rb"))
     else:
         x_class1 = read_appearances_map_from_file(join('data', 'test-class1.txt'))
-        # x_class2 = read_appearances_map_from_file(join('data', 'test-class2.txt'))
-        print 1, len(x_class1)
+        x_class2 = read_appearances_map_from_file(join('data', 'test-class2.txt'))
         d = get_w2v_dict('data')
-        x = x_class1
-        # x.extend(x_class2)
+        x = []
+        x.extend(x_class1)
+        x.extend(x_class2)
         data_vecs = create_windows_vecs(x, d, 'בצל')
-        print 2, len(data_vecs)
         labels = [0 for _ in range(len(x_class1))]
-        # labels.extend([1 for _ in range(len(x_class2))])
+        labels.extend([1 for _ in range(len(x_class2))])
         test_set = {'x': data_vecs, 'y': labels}
         cPickle.dump(test_set, open(join('data', "test-set.p"), "wb"))
     return test_set
