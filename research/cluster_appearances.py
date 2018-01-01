@@ -43,14 +43,8 @@ def evaluate(kmeans):
     test_set = load_test_set()
     predicted_labels = kmeans.predict(test_set['x'])
     true_labels = test_set['y']
-    print len(true_labels)
-    print len(test_set['x'])
     if accuracy_score(true_labels, predicted_labels) < 0.5:
         predicted_labels = [1 - l for l in predicted_labels]
-    print sum(predicted_labels)
-    print len(predicted_labels)
-    print sum(true_labels)
-    print len(true_labels)
     print "accuracy:", accuracy_score(true_labels, predicted_labels)
     print "recall class 1:", recall_score(true_labels, predicted_labels, pos_label=0)
     print "precision class 1:", precision_score(true_labels, predicted_labels, pos_label=0)
