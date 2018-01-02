@@ -4,7 +4,6 @@ import sys
 from os.path import join
 from collections import Counter
 import os
-from pathes import Path
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
@@ -127,37 +126,6 @@ def organize_odeds_data(path):
     print("words saved")
 
 
-def top_similar_smart(wanted, vec_set, words_counts, results_to_show=10):
-    idx, sims = top_similar(wanted, vec_set, results_to_show + 5)
-    cur_words_counts = words_counts[idx]
-    highest = np.max(cur_words_counts)
-    smart_score = [(sims[i] + 0.05 * cur_words_counts[i] / highest) for i in range(len(idx))]
-    ind = np.argpartition(smart_score, -results_to_show)[-results_to_show:]
-    ind = ind[np.argsort([smart_score[i] for i in ind])]
-    ind = ind[::-1]
-    return [idx[i] for i in ind], [sims[i] for i in ind]
-
-
-def top_similar(vec, vec_set, results_to_show=10):
-    try:
-        mul = np.dot(vec_set, vec)
-    except:
-        try:
-            mul = np.dot(vec, vec_set)
-        except:
-            for i in range(len(vec_set)):
-                if vec_set[i].shape[0] != 100 or vec_set[i].shape[0] != 200:
-                    print("error at top similar at vec number " + str(i) + "with shape" + str(vec_set[i].shape))
-    vec_norm = LA.norm(vec)
-    vecs_norms = LA.norm(vec_set, axis=1)
-    sims = np.divide(mul, vecs_norms)
-    sims /= vec_norm
-    ind = np.argpartition(sims, -results_to_show)[-results_to_show:]
-    ind = ind[np.argsort(sims[ind])]
-    ind = ind[::-1]
-    return ind, sims[ind]
-
-
 def as_appears_in_algo(word):
     word = word.lstrip()
     word = word.replace("-", "~")
@@ -170,23 +138,6 @@ def as_appear_in_site(word):
     return word
 
 
-def get_similar(wanted, words, vecs):
-    text = ""
-    inds, sims = top_similar(wanted, vecs)
-    for i in range(len(inds)):
-        text += "similarity::" + str(sims[i]) + "&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp" + words[inds[i]] + \
-                "<br>"
-    return text
-
-
-def get_similar_console(wanted, words, vecs):
-    text = ""
-    inds, sims = top_similar(wanted, vecs)
-    for i in range(len(inds)):
-        text += "similarity::" + str(sims[i]) + " " + words[inds[i]] + "\n"
-    return text
-
-
 def get_context_vec(path, context_words, words_list):
     # context_vectors = np.load(join(path, "words_vectors.npy"))
     context_vectors = np.load(join(path, "context_vectors.npy"))
@@ -196,6 +147,19 @@ def get_context_vec(path, context_words, words_list):
         context_vec += context_vectors[ind]
         # print context_vectors[ind]
     return context_vec
+
+
+def search_for_word_as_part_of_pos(wanted, words_list, multi_pos_flag):
+    cur_algo_words = words_list
+    wanted_idx = []
+    if multi_pos_flag:
+        for i, word in enumerate(cur_algo_words):
+            parts = word.split('_')
+            if len(parts) > 1 and parts[1] == wanted:
+                if len(parts) > 1 and parts[1] == wanted:
+                    wanted_idx.append(i)
+                    print cur_algo_words[i]
+    return wanted_idx
 
 
 if __name__ == "__main__":

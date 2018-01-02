@@ -64,7 +64,7 @@ def search():
     if not wanted:
         return "<p size='4'>Please enter a word</p>"
     text = menu_text
-    text += "<p align='center'><b  size='5'>Current searching for words similar to-&nbsp&nbsp&nbsp" + wanted + "</b><br>"
+    text += "<p align='center'><b  size='5'>Current searching for words similar to-" + html_space + wanted + "</b><br>"
     for algo in active_algos:
         cur_algo_words = words_dict[algo]
         cur_algo_vec = vectors_dict[algo]
@@ -123,35 +123,6 @@ def analogy():
                          cur_algo_vectors[input_pos_idx_option[1]]
                 text += get_similar_to_site_and_file(wanted, algo, f)
     return text + "</p>"
-
-
-def get_similar_to_site_and_file(wanted, algo, f):
-    global num_results
-    text = ""
-    if algo not in words_counters_dict.keys():
-        inds, sims = top_similar(wanted, vectors_dict[algo], results_to_show=num_results)
-    else:
-        inds, sims = top_similar_smart(wanted, vectors_dict[algo], words_counters_dict[algo],
-                                       results_to_show=num_results)
-    for i in range(len(inds)):
-        text += "similarity:" + str(sims[i]) + "&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp" + \
-                as_appear_in_site(words_dict[algo][inds[i]]) + "<br>"
-        if i < MAX_RESULTS_PRINT_TO_FILE:
-            f.write(words_dict[algo][inds[i]] + "\n")
-    return text
-
-
-def search_for_word_as_part_of_pos(wanted, algo):
-    cur_algo_words = words_dict[algo]
-    wanted_idx = []
-    if multi_pos_dict[algo]:
-        for i, word in enumerate(cur_algo_words):
-            parts = word.split('_')
-            if len(parts) > 1 and parts[1] == wanted:
-                if len(parts) > 1 and parts[1] == wanted:
-                    wanted_idx.append(i)
-                    print cur_algo_words[i]
-    return wanted_idx
 
 
 def add_algorithm(path, name, multi_pos_flag=False, words_counter_flag=False):

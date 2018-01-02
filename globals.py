@@ -4,6 +4,8 @@ analogy_result_file = 'analogy_results.txt'
 MAX_RESULTS_PRINT_TO_FILE = 5
 DEFAULT_NUM_RESULTS = 10
 
+html_space = "&nbsp&nbsp&nbsp&nbsp"
+html_double_space = html_space+html_space
 menu_text = '''
         <i size="7"><strong> Hebrew Word2Vec<br><br></strong></i>
 
