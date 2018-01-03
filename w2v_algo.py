@@ -51,11 +51,14 @@ class AlgoContainer:
 
 class Algo:
     def __init__(self, data_path, name, multi_pos_flag=False, words_counter_flag=False):
-        self._data_path = data_path
+        self._data_path = data_path.value
         self._name = name
         self._multi_pos_flag = multi_pos_flag
         self._words_counter_flag = words_counter_flag
         self._load_algo_data()
+
+    def get_name(self):
+        return self._name
 
     def _load_algo_data(self):
         path = join('result', self._data_path)
@@ -66,7 +69,7 @@ class Algo:
         cur_words = [word[:-1] for word in cur_words]
         cur_vecs = np.load(join(path, "words_vectors.npy"))
         self._words_list = cur_words
-        self._vecs = cur_vecs / LA.norm(cur_vecs, axis=1)
+        self._vecs = cur_vecs / LA.norm(cur_vecs, axis=1).reshape((len(cur_vecs), 1))
 
         if self._words_counter_flag:
             if not os.path.exists(join(path, 'words_counter.npy')):
