@@ -50,8 +50,8 @@ class AlgoContainer:
 
 
 class Algo:
-    def __init__(self, dir_path, name, multi_pos_flag=False, words_counter_flag=False):
-        self._dir_path = dir_path
+    def __init__(self, data_path, name, multi_pos_flag=False, words_counter_flag=False):
+        self._data_path = data_path
         self._name = name
         self._multi_pos_flag = multi_pos_flag
         self._words_counter_flag = words_counter_flag
