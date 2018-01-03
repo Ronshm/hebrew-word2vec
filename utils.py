@@ -1,5 +1,4 @@
 import numpy as np
-from numpy import linalg as LA
 import sys
 from os.path import join
 from collections import Counter
@@ -160,6 +159,57 @@ def search_for_word_as_part_of_pos(wanted, words_list, multi_pos_flag):
                     wanted_idx.append(i)
                     print cur_algo_words[i]
     return wanted_idx
+
+
+def convert_search_results_to_text(algos_similarity_results, wanted_word):
+    html_text = ""
+    file_text = ''
+    for algo_name, algo_results in algos_similarity_results.iteritems():
+        file_text += "Algo: {}\n".format(algo_name)
+        html_text += "<b align = 'center'><br> Algorithm: {}</b><br>".format(algo_name)
+        if len(algo_results) == 0:
+            html_text += wanted_word + " is unknown, sorry.<br>"
+            continue
+        for word, results_for_word in algo_results.iteritems():
+            file_text += "\n\nCurrent searching for words similar to: {} \n".format(word)
+            html_text += "<br>Showing results for {}<br><br>".format(as_appear_in_site(word))
+            new_html, new_file = convert_results_to_table(results_for_word)
+            html_text += new_html
+            file_text += new_file
+    return html_text, file_text
+
+
+def convert_analogy_results_to_text(algos_similarity_results, wanted_word):
+    html_text = ""
+    file_text = ''
+    for algo_name, algo_results in algos_similarity_results.iteritems():
+        file_text += "Algo: {}\n".format(algo_name)
+        html_text += "<b align = 'center'><br> Algorithm: {}</b><br>".format(algo_name)
+        if len(algo_results) == 0:
+            html_text += wanted_word + " is unknown, sorry.<br>"
+            continue
+        for words, results_for_word in algo_results.iteritems():
+            html_text += "<p align='center'><b  size='6'>Current looking for:<br>{} : word <br> = <br> {} : {} </b><br>".format(
+                words[2], words[1], words[0])
+            file_text += "Current looking for: {} : word  = {} : {} \n".format(words[2], words[1], words[0])
+            new_html, new_file = convert_results_to_table(results_for_word)
+            html_text += new_html
+            file_text += new_file
+    return html_text, file_text
+
+
+def convert_results_to_table(results):
+    html_text = ""
+    file_text = ""
+    html_text += '<table style="width:100%"> <tr> <th>{}</th> <th>{}</th> <th>{}</th></tr>'.format(
+        *(results[0].keys()))
+    for result in results:
+        file_text += 'word: {}, similarity: {}, appearances: {} .  \n'.format(result['word'],
+                                                                              result['similarity'],
+                                                                              result['appearances'])
+        html_text += '<tr><td> {}</td><td> {}</td><td> {}</td></tr>'.format(*result.values())
+    html_text += '</table>'
+    return html_text, file_text
 
 
 if __name__ == "__main__":
