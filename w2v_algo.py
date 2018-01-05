@@ -92,7 +92,6 @@ class Algo:
 
     def search_analogy(self, input_words, num_results):
         results_tuples = []
-
         words_idx = []
         for in_word in input_words:
             cur_word_idx = search_for_word_as_part_of_pos(in_word, self._words_list, self._multi_pos_flag)
@@ -122,7 +121,7 @@ class Algo:
         ind = np.argpartition(smart_score, -num_results)[-num_results:]
         ind = ind[np.argsort([smart_score[i] for i in ind])]
         ind = ind[::-1]
-        results = [{'word': self._words_list[i], 'similarity': sims[i], 'appearances': cur_words_counts[i]}
+        results = [{'word': self._words_list[idx[i]], 'similarity': sims[i], 'appearances': cur_words_counts[i]}
                    for i in ind]
         return results
 
