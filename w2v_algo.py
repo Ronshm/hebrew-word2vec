@@ -81,7 +81,7 @@ class Algo:
         results_dict = {}
         wanted_ind = search_for_word_as_part_of_pos(word, self._words_list, self._multi_pos_flag)
         try:
-            wanted_ind.append(self._vecs.index(as_appears_in_algo(word)))
+            wanted_ind.append(self._words_list.index(as_appears_in_algo(word)))
         except:
             if len(wanted_ind) == 0:
                 return {}
@@ -91,7 +91,7 @@ class Algo:
         return results_dict
 
     def search_analogy(self, input_words, num_results):
-        results_dict = {}
+        results_tuples = []
 
         words_idx = []
         for in_word in input_words:
@@ -107,16 +107,15 @@ class Algo:
             wanted_vec = self._vecs[input_pos_idx_option[2]] - self._vecs[input_pos_idx_option[0]] + \
                          self._vecs[input_pos_idx_option[1]]
             results = self._top_similar_smart(wanted_vec, num_results=num_results)
-            results_dict[(self._words_list[word_ind] for word_ind in input_pos_idx_option)] = results
-
-        return results_dict
+            results_tuples.append(([self._words_list[word_ind] for word_ind in input_pos_idx_option], results))
+        return results_tuples
 
     def _top_similar_smart(self, wanted_vec, num_results=10):
-        if not self._words_counter:
-            idx, sims = self._top_similar(wanted_vec, self._vecs, num_results)
+        if not self._words_counter_flag:
+            idx, sims = self._top_similar(wanted_vec, num_results)
             results = [{'word': self._words_list[idx[i]], 'similarity': sims[i]} for i in range(num_results)]
             return results
-        idx, sims = self._top_similar(wanted_vec, self._vecs, num_results + 5)
+        idx, sims = self._top_similar(wanted_vec, num_results + 5)
         cur_words_counts = self._words_counter[idx]
         highest = np.max(cur_words_counts)
         smart_score = [(sims[i] + 0.05 * cur_words_counts[i] / highest) for i in range(len(idx))]
@@ -138,8 +137,7 @@ class Algo:
                     if self._vecs[i].shape[0] != 100 or self._vecs[i].shape[0] != 200:
                         print("error at top similar at vec number {} with shape {}".format(i, self._vecs[i].shape))
         vec_norm = LA.norm(vec)
-        sims = np.divide(mul, self._vecs)
-        sims /= vec_norm
+        sims = mul / vec_norm
         ind = np.argpartition(sims, -results_to_show)[-results_to_show:]
         ind = ind[np.argsort(sims[ind])]
         ind = ind[::-1]

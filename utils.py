@@ -188,7 +188,8 @@ def convert_analogy_results_to_text(algos_similarity_results, wanted_word):
         if len(algo_results) == 0:
             html_text += wanted_word + " is unknown, sorry.<br>"
             continue
-        for words, results_for_word in algo_results.iteritems():
+        for results_tuple in algo_results:
+            words, results_for_word = results_tuple
             html_text += "<p align='center'><b  size='6'>Current looking for:<br>{} : word <br> = <br> {} : {} </b><br>".format(
                 words[2], words[1], words[0])
             file_text += "Current looking for: {} : word  = {} : {} \n".format(words[2], words[1], words[0])
@@ -201,13 +202,18 @@ def convert_analogy_results_to_text(algos_similarity_results, wanted_word):
 def convert_results_to_table(results):
     html_text = ""
     file_text = ""
-    html_text += '<table style="width:100%"> <tr> <th>{}</th> <th>{}</th> <th>{}</th></tr>'.format(
-        *(results[0].keys()))
+    html_text += '<table style="width:100%"> <tr>'
+    keys = results[0].keys()
+    for key in keys:
+        html_text += '<th align="right">{}</th>'.format(key)
+    html_text += '</tr>'
     for result in results:
-        file_text += 'word: {}, similarity: {}, appearances: {} .  \n'.format(result['word'],
-                                                                              result['similarity'],
-                                                                              result['appearances'])
-        html_text += '<tr><td> {}</td><td> {}</td><td> {}</td></tr>'.format(*result.values())
+        for key in keys:
+            file_text += '{}: {}, '.format(key, result[key])
+        html_text += '<tr>'
+        for val in result.values():
+            html_text += '<td align="right"> {}</td>'.format(val)
+        html_text += '</tr>'
     html_text += '</table>'
     return html_text, file_text
 
