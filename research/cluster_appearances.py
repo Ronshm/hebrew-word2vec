@@ -3,10 +3,13 @@
 from sklearn.cluster import KMeans
 from sklearn.metrics import *
 from local_utils import *
+import os
 
 
 def part_one(wanted_word):
     new_word_data_path = join('data', wanted_word)
+    if not os.path.exists(new_word_data_path):
+        os.makedirs(new_word_data_path)
     if exists(join(new_word_data_path, 'windows-vecs.npy')):
         appearances_map = read_appearances_map_from_file(join(new_word_data_path, 'appearance_map.txt'))
         windows_vecs = np.load(join(new_word_data_path, 'windows-vecs.npy'))
