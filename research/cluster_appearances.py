@@ -53,9 +53,9 @@ def evaluate(kmeans):
 
 
 def main():
-    appearances_map, windows_vecs = part_one('בצל')
+    appearances_map, windows_vecs = part_one('שמים')
     kmeans = part_two(appearances_map, windows_vecs)
-    evaluate(kmeans)
+    # evaluate(kmeans)
 
 
 if __name__ == '__main__':
