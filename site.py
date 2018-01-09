@@ -85,30 +85,6 @@ def analogy():
     f.write(file_text)
     return html_text + "</p>"
 
-    words_idx = []
-    for in_word in input_words:
-        cur_word_idx = search_for_word_as_part_of_pos(in_word, algo)
-        try:
-            cur_word_idx.append(cur_algo_words.index(as_appears_in_algo(in_word)))
-        except:
-            if len(cur_word_idx) == 0:
-                text += in_word + " is unknown, sorry."
-                flag = True
-        words_idx.append(cur_word_idx)
-
-    if not flag:
-        for input_pos_idx_option in list(itertools.product(*words_idx)):
-            text += "<p align='center'><b  size='6'>Current looking for:<br>" + cur_algo_words[
-                input_pos_idx_option[2]] + " : word" + "<br>=<br>" + cur_algo_words[
-                        input_pos_idx_option[1]] + " : " + cur_algo_words[input_pos_idx_option[0]] + "</b><br>"
-            f.write("\n\nCurrent looking for:" + cur_algo_words[input_pos_idx_option[2]] + " : word = " +
-                    cur_algo_words[input_pos_idx_option[1]] + " : " + cur_algo_words[
-                        input_pos_idx_option[0]] + "\n")
-            wanted = cur_algo_vectors[input_pos_idx_option[2]] - cur_algo_vectors[input_pos_idx_option[0]] + \
-                     cur_algo_vectors[input_pos_idx_option[1]]
-            text += get_similar_to_site_and_file(wanted, algo, f)
-    return text + "</p>"
-
 
 def prepare_to_run():
     algo_container = AlgoContainer()
