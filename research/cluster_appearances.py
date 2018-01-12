@@ -81,7 +81,8 @@ def evaluate(kmeans):
 
 def main(word):
     appearances_map, windows_vecs = part_one(word)
-    kmeans = part_two_kmeans(word, appearances_map, windows_vecs)
+    # kmeans = part_two_kmeans(word, appearances_map, windows_vecs)
+    kmeans = part_two_spectral(word, appearances_map, windows_vecs)
     # evaluate(kmeans)
 
 
