@@ -24,8 +24,10 @@ def part_one(wanted_word):
 
 def part_two_kmeans(wanted_word, appearance_map, windows_vecs):
     new_word_data_path = join('data', wanted_word)
+    print "start clustering"
     kmeans = KMeans(n_clusters=2, random_state=0).fit(windows_vecs)
     labels = kmeans.labels_
+    print "done clustering"
     f1 = open(join(new_word_data_path, 'cluster1_sentences.txt'), 'w')
     f2 = open(join(new_word_data_path, 'cluster2_sentences.txt'), 'w')
     cluster1_windows = []
@@ -46,8 +48,10 @@ def part_two_kmeans(wanted_word, appearance_map, windows_vecs):
 
 def part_two_spectral(wanted_word, appearance_map, windows_vecs):
     new_word_data_path = join('spectral-data', wanted_word)
+    print "start clustering"
     spectral = SpectralClustering(n_clusters=2).fit(windows_vecs)
     labels = spectral.labels_
+    print "done clustering"
     f1 = open(join(new_word_data_path, 'cluster1_sentences.txt'), 'w')
     f2 = open(join(new_word_data_path, 'cluster2_sentences.txt'), 'w')
     cluster1_windows = []
