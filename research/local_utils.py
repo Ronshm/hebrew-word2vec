@@ -3,6 +3,7 @@
 
 import numpy as np
 from os.path import join, exists
+import os
 import cPickle
 from copy import deepcopy
 
@@ -93,3 +94,8 @@ def load_test_set():
         test_set = {'x': data_vecs, 'y': labels}
         cPickle.dump(test_set, open(join('data', "test-set.p"), "wb"))
     return test_set
+
+
+def create_dir(path):
+    if not exists(path):
+        os.makedirs(path)

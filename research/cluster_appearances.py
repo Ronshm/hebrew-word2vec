@@ -24,6 +24,7 @@ def part_one(wanted_word):
 
 def part_two_kmeans(wanted_word, appearance_map, windows_vecs):
     new_word_data_path = join('data', wanted_word)
+    create_dir(new_word_data_path)
     print "start clustering"
     kmeans = KMeans(n_clusters=2, random_state=0).fit(windows_vecs)
     labels = kmeans.labels_
@@ -48,6 +49,7 @@ def part_two_kmeans(wanted_word, appearance_map, windows_vecs):
 
 def part_two_spectral(wanted_word, appearance_map, windows_vecs):
     new_word_data_path = join('spectral-data', wanted_word)
+    create_dir(new_word_data_path)
     print "start clustering"
     spectral = SpectralClustering(n_clusters=2).fit(windows_vecs)
     labels = spectral.labels_
@@ -91,22 +93,22 @@ def main(word):
 
 
 if __name__ == '__main__':
-    main("בצל")
-    # main("לכת")
-    # main("מאור")
-    # main("בריאה")
-    # main("שכל")
-    # main("מכל")
-    # main("מעלה")
-    main("בצורת")
-    # main("שכח")
-    # main("שאף")
-    # main("מידע")
-    # main("למידה")
-    # main("מעתיקה")
-    # main("מתואר")
-    # main("מיון")
-    # main("ליון")
-    # main("משני")
-    # main("משנה")
-    # main("מבנה")
+    # main("בצל")
+    main("לכת")
+    main("מאור")
+    main("בריאה")
+    main("שכל")
+    main("מכל")
+    main("מעלה")
+    # main("בצורת")
+    main("שכח")
+    main("שאף")
+    main("מידע")
+    main("למידה")
+    main("מעתיקה")
+    main("מתואר")
+    main("מיון")
+    main("ליון")
+    main("משני")
+    main("משנה")
+    main("מבנה")
