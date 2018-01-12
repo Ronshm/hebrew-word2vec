@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from sklearn.cluster import KMeans
+from sklearn.cluster import KMeans, SpectralClustering
 from sklearn.metrics import *
 from local_utils import *
 import os
@@ -22,7 +22,7 @@ def part_one(wanted_word):
     return appearances_map, windows_vecs
 
 
-def part_two(wanted_word, appearance_map, windows_vecs):
+def part_two_kmeans(wanted_word, appearance_map, windows_vecs):
     new_word_data_path = join('data', wanted_word)
     kmeans = KMeans(n_clusters=2, random_state=0).fit(windows_vecs)
     labels = kmeans.labels_
@@ -44,6 +44,28 @@ def part_two(wanted_word, appearance_map, windows_vecs):
     return kmeans
 
 
+def part_two_spectral(wanted_word, appearance_map, windows_vecs):
+    new_word_data_path = join('spectral-data', wanted_word)
+    spectral = SpectralClustering(n_clusters=2).fit(windows_vecs)
+    labels = spectral.labels_
+    f1 = open(join(new_word_data_path, 'cluster1_sentences.txt'), 'w')
+    f2 = open(join(new_word_data_path, 'cluster2_sentences.txt'), 'w')
+    cluster1_windows = []
+    cluster2_windows = []
+    for i, win in enumerate(appearance_map):
+        if labels[i]:
+            f = f1
+            cluster = cluster1_windows
+        else:
+            f = f2
+            cluster = cluster2_windows
+        for word in win:
+            f.write(word + ' ')
+        f.write('\n')
+        cluster.append(win)
+    return spectral
+
+
 def evaluate(kmeans):
     test_set = load_test_set()
     predicted_labels = kmeans.predict(test_set['x'])
@@ -59,27 +81,27 @@ def evaluate(kmeans):
 
 def main(word):
     appearances_map, windows_vecs = part_one(word)
-    kmeans = part_two(word, appearances_map, windows_vecs)
+    kmeans = part_two_kmeans(word, appearances_map, windows_vecs)
     # evaluate(kmeans)
 
 
 if __name__ == '__main__':
     main("בצל")
-    main("לכת")
-    main("מאור")
-    main("בריאה")
-    main("שכל")
-    main("מכל")
-    main("מעלה")
+    # main("לכת")
+    # main("מאור")
+    # main("בריאה")
+    # main("שכל")
+    # main("מכל")
+    # main("מעלה")
     main("בצורת")
-    main("שכח")
-    main("שאף")
-    main("מידע")
-    main("למידה")
-    main("מעתיקה")
-    main("מתואר")
-    main("מיון")
-    main("ליון")
-    main("משני")
-    main("משנה")
-    main("מבנה")
+    # main("שכח")
+    # main("שאף")
+    # main("מידע")
+    # main("למידה")
+    # main("מעתיקה")
+    # main("מתואר")
+    # main("מיון")
+    # main("ליון")
+    # main("משני")
+    # main("משנה")
+    # main("מבנה")
