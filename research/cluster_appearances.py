@@ -44,11 +44,13 @@ def part_two(cluster_type, wanted_word, appearance_map, windows_vecs, reduced_ve
         cluster_algo = DBSCAN().fit(windows_vecs)
         pass
     elif cluster_type == ClusteringMethods.HDBScan:
+        return
         pass
     elif cluster_type == ClusteringMethods.PcaDBScan:
         cluster_algo = DBSCAN().fit(reduced_vecs)
         pass
     elif cluster_type == ClusteringMethods.PcaHDBScan:
+        return
         pass
     elif cluster_type == ClusteringMethods.PcaKmeans:
         cluster_algo = KMeans(n_clusters=2, random_state=0).fit(reduced_vecs)
