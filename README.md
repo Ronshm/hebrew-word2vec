@@ -8,6 +8,7 @@ You can try the stable demo version on http://u.cs.biu.ac.il/~yogo/tw2v/ , or th
 
 https://drive.google.com/drive/folders/1qBgdcXtGjse9Kq7k1wwMzD84HH_Z8aJt?usp=sharing
 
+לשאלות, עזרה והצעות לשיפור, מוזמנים לפנות אלי - Ron.Shemesh98@gmail.com
 
 Released under the [Apache License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0).
 
