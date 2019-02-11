@@ -1,7 +1,7 @@
 # Hebrew Similar Words API:
 
 In order to Use the API you should import HebrewSimilarWords from api.hebrew_w2v_api,
-and download and extract the data from http://www.upfile.co.il/file/355720328.html into the main repo directory.
+and download and extract the data from https://drive.google.com/drive/folders/1qBgdcXtGjse9Kq7k1wwMzD84HH_Z8aJt?usp=sharing into the main repo directory.
 
 Functions:
 
